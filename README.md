@@ -1,7 +1,7 @@
   <img width="1151" height="628" alt="스크린샷 2026-03-30 140744" src="https://github.com/user-attachments/assets/6abf9db0-72c4-4b27-838d-c4271d8f26df" />
 
 
-# 🧭 떠나GO (DDUNA-GO)
+# 🧭 떠나GO (TteonaGO)
 > **"당신이 꿈꾸는 여행을 그리다"**  
 > 스마트 여행 경로 최적화 및 통합 쇼핑 플랫폼
 
