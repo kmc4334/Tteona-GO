@@ -1,4 +1,5 @@
-  <img width="1151" height="631" alt="스크린샷 2026-03-30 140454" src="https://github.com/user-attachments/assets/ac8a7ff4-4014-4b20-81ca-15f38ef3f64e" />
+  <img width="1151" height="628" alt="스크린샷 2026-03-30 140744" src="https://github.com/user-attachments/assets/6abf9db0-72c4-4b27-838d-c4271d8f26df" />
+
 
 # 🧭 떠나GO (DDUNA-GO)
 > **"당신이 꿈꾸는 여행을 그리다"**  
