@@ -1,0 +1,184 @@
+src/screens/AIReviewScreen.tsx(68,63): error TS2339: Property 'shareButton' does not exist on type '{ safeArea: { flex: number; backgroundColor: string; }; header: { height: number; flexDirection: "row"; alignItems: "center"; justifyContent: "space-between"; paddingHorizontal: number; backgroundColor: string; borderBottomWidth: number; borderBottomColor: string; }; ... 32 more ...; confirmText: { ...; }; }'.
+src/screens/ChangeNameScreen.tsx(113,3): error TS2322: Type '{ outlineStyle?: "none" | undefined; fontSize: number; color: string; }' is not assignable to type 'ViewStyle | TextStyle | ImageStyle'.
+  Type '{ outlineStyle?: "none" | undefined; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+    Types of property 'outlineStyle' are incompatible.
+      Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+        Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ConciergeScreen.tsx(226,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/HomeScreen.tsx(126,47): error TS2339: Property 'detailBtn' does not exist on type '{ safeArea: { flex: number; backgroundColor: string; }; header: { flexDirection: "row"; justifyContent: "space-between"; alignItems: "center"; paddingHorizontal: number; paddingTop: number; paddingBottom: number; backgroundColor: string; }; ... 65 more ...; emptyText: { ...; }; }'.
+src/screens/LoginScreen.tsx(118,3): error TS2322: Type '{ outlineStyle?: "none" | undefined; fontSize: number; color: string; }' is not assignable to type 'ViewStyle | TextStyle | ImageStyle'.
+  Type '{ outlineStyle?: "none" | undefined; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+    Types of property 'outlineStyle' are incompatible.
+      Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+        Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/MyActivityScreen.tsx(117,38): error TS2339: Property '_id' does not exist on type 'TravelProduct'.
+src/screens/PersonalityResultScreen.tsx(137,62): error TS2345: Argument of type 'string' is not assignable to parameter of type '{ name: "Intro"; params: undefined; path?: string | undefined; merge?: boolean | undefined; pop?: boolean | undefined; } | { name: "Login"; params: undefined; path?: string | undefined; merge?: boolean | undefined; pop?: boolean | undefined; } | ... 22 more ... | { ...; }'.
+src/screens/ScheduleChatbotModal.tsx(107,9): error TS18048: 'node.category' is possibly 'undefined'.
+src/screens/ScheduleChatbotModal.tsx(112,32): error TS2538: Type 'undefined' cannot be used as an index type.
+src/screens/ScheduleChatbotModal.tsx(248,16): error TS2304: Cannot find name 'ScrollView'.
+src/screens/ScheduleChatbotModal.tsx(272,17): error TS2304: Cannot find name 'ScrollView'.
+src/screens/ScheduleChatbotModal.tsx(281,18): error TS2304: Cannot find name 'ScrollView'.
+src/screens/ScheduleChatbotModal.tsx(293,19): error TS2304: Cannot find name 'ScrollView'.
+src/screens/ScheduleChatbotModal.tsx(307,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; flex: number; backgroundColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; marginRight: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleChatbotModal.tsx(501,36): error TS2339: Property 'semibold' does not exist on type '{ regular: "400"; medium: "500"; bold: "700"; }'.
+src/screens/ScheduleScreen.tsx(166,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(174,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(184,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(194,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(206,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(217,19): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(228,15): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(236,23): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle | Falsy | RegisteredStyle<TextStyle> | RecursiveArray<TextStyle | Falsy | RegisteredStyle<TextStyle>> | readonly (TextStyle | ... 1 more ... | RegisteredStyle<...>)[]'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle | Falsy | RegisteredStyle<TextStyle> | RecursiveArray<TextStyle | Falsy | RegisteredStyle<TextStyle>> | readonly (TextStyle | ... 1 more ... | RegisteredStyle<...>)[]'.
+      Type '{ outlineStyle?: "none" | undefined; backgroundColor: string; borderWidth: number; borderColor: string; borderRadius: number; paddingHorizontal: number; paddingVertical: number; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(328,27): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; fontSize: number; fontWeight: "700"; color: string; marginLeft: number; flex: number; padding: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; fontSize: number; fontWeight: "700"; color: string; marginLeft: number; flex: number; padding: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; fontSize: number; fontWeight: "700"; color: string; marginLeft: number; flex: number; padding: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; fontSize: number; fontWeight: "700"; color: string; marginLeft: number; flex: number; padding: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/ScheduleScreen.tsx(602,36): error TS2339: Property 'semibold' does not exist on type '{ regular: "400"; medium: "500"; bold: "700"; }'.
+src/screens/SignupScreen.tsx(248,3): error TS2322: Type '{ outlineStyle?: "none" | undefined; fontSize: number; color: string; }' is not assignable to type 'ViewStyle | TextStyle | ImageStyle'.
+  Type '{ outlineStyle?: "none" | undefined; fontSize: number; color: string; }' is not assignable to type 'TextStyle'.
+    Types of property 'outlineStyle' are incompatible.
+      Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+        Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/screens/WeatherScreen.tsx(94,13): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: TextInputProps): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; flex: number; fontSize: number; color: string; fontWeight: "600"; paddingVertical: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; flex: number; fontSize: number; color: string; fontWeight: "600"; paddingVertical: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+  Overload 2 of 2, '(props: TextInputProps, context: any): TextInput', gave the following error.
+    Type '{ outlineStyle?: "none" | undefined; flex: number; fontSize: number; color: string; fontWeight: "600"; paddingVertical: number; }' is not assignable to type 'StyleProp<TextStyle>'.
+      Type '{ outlineStyle?: "none" | undefined; flex: number; fontSize: number; color: string; fontWeight: "600"; paddingVertical: number; }' is not assignable to type 'TextStyle'.
+        Types of property 'outlineStyle' are incompatible.
+          Type '"none" | undefined' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+            Type '"none"' is not assignable to type '"solid" | "dotted" | "dashed" | undefined'.
+src/store/NotificationContext.tsx(39,9): error TS2304: Cannot find name 'logout'.

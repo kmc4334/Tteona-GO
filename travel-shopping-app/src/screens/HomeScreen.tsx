@@ -9,6 +9,7 @@ import { Typography } from '../theme/typography';
 import { Search, Bell, Map, Sparkles, Navigation, Heart, Star, MapPin, Send, ChevronRight, AlertCircle } from 'lucide-react-native';
 import { useNotifications } from '../store/NotificationContext';
 import { API_BASE } from '../store/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 const COLUMN_WIDTH = (width - Spacing.lg * 3) / 2;
@@ -50,6 +51,29 @@ export const HomeScreen = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePersonalityTestClick = async () => {
+    console.log('Personality test button clicked');
+    try {
+      // AsyncStorage에서 저장된 결과 확인 (DB 없이 로컬에 저장)
+      const savedResultString = await AsyncStorage.getItem('personalityResult');
+      
+      if (savedResultString) {
+        // 저장된 결과가 있으면 결과 화면으로 이동
+        const savedResult = JSON.parse(savedResultString);
+        console.log('Found saved result:', savedResult.travelType);
+        navigation.navigate('PersonalityResult', { savedResult });
+      } else {
+        // 저장된 결과가 없으면 테스트 시작
+        console.log('No saved result, starting test');
+        navigation.navigate('PersonalityTest');
+      }
+    } catch (error) {
+      console.error('Check saved result error:', error);
+      // 에러 발생 시 테스트 시작
+      navigation.navigate('PersonalityTest');
     }
   };
 
@@ -155,17 +179,17 @@ export const HomeScreen = () => {
           </View>
         </View>
 
-        {/* ── AI Recommendation Card ── */}
+        {/* ── Personality Test Card ── */}
         <View style={styles.cardContainer}>
-          <TouchableOpacity style={styles.aiCard} onPress={() => navigation.navigate('Concierge')}>
-            <View style={styles.aiIconWrapper}>
-              <Sparkles size={22} color="#fff" strokeWidth={2} />
+          <TouchableOpacity style={styles.personalityCard} onPress={handlePersonalityTestClick}>
+            <View style={[styles.aiIconWrapper, { backgroundColor: '#9F7AEA' }]}>
+              <Text style={{ fontSize: 22 }}>✈️</Text>
             </View>
             <View style={styles.aiTextContent}>
-              <Text style={styles.aiTitle}>어디로 갈지 고민인가요?</Text>
-              <Text style={styles.aiSubtitle}>AI가 예산에 맞춰 일정을 짜드려요</Text>
+              <Text style={styles.aiTitle}>나의 여행 스타일은?</Text>
+              <Text style={styles.aiSubtitle}>12가지 질문으로 알아보는 여행 성향 테스트</Text>
             </View>
-            <Send size={22} color="#4A90E2" strokeWidth={1.5} />
+            <Send size={22} color="#9F7AEA" strokeWidth={1.5} />
           </TouchableOpacity>
         </View>
 
@@ -385,6 +409,21 @@ const styles = StyleSheet.create({
   aiTextContent: { flex: 1 },
   aiTitle: { fontSize: 15, fontWeight: 'bold', color: '#1A1A1A', marginBottom: 2 },
   aiSubtitle: { fontSize: 12, color: '#999', fontWeight: '600' },
+
+  personalityCard: {
+    backgroundColor: '#FAF5FF',
+    borderRadius: 25,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E9D8FD',
+    shadowColor: '#9F7AEA',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 2,
+  },
 
   routeCard: {
     backgroundColor: '#F0FFF4',

@@ -28,6 +28,8 @@ import { ChangeNameScreen } from '../screens/ChangeNameScreen';
 import { ChangeEmailScreen } from '../screens/ChangeEmailScreen';
 import { ChangePasswordScreen } from '../screens/ChangePasswordScreen';
 import { PathFindingScreen } from '../screens/PathFindingScreen';
+import { PersonalityTestScreen } from '../screens/PersonalityTestScreen';
+import { PersonalityResultScreen } from '../screens/PersonalityResultScreen';
 import { Colors } from '../theme/colors';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,6 +48,7 @@ export const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+<<<<<<< Updated upstream
         {!isAuthenticated ? (
           <>
             <Stack.Screen name="Intro" component={IntroScreen} />
@@ -85,6 +88,37 @@ export const AppNavigator = () => {
             <Stack.Screen name="PathFinding" component={PathFindingScreen} />
           </>
         )}
+=======
+        {/* 개발용: 홈화면 바로 이동 - 인증/온보딩 우회 */}
+        <>
+          <Stack.Screen name="Main" component={BottomTabNavigator} />
+          <Stack.Screen name="AIReview" component={AIReviewScreen} />
+          <Stack.Screen name="Weather" component={WeatherScreen} />
+          <Stack.Screen name="Map" component={MapScreen} />
+          <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
+          <Stack.Screen name="InterestSelection" component={InterestSelectionScreen} />
+          <Stack.Screen name="ResultPreview" component={ResultPreviewScreen} />
+          <Stack.Screen name="Concierge" component={ConciergeScreen} />
+          <Stack.Screen name="CreatePackage" component={CreatePackageScreen} />
+          <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
+          <Stack.Screen name="MyActivity" component={MyActivityScreen} />
+          <Stack.Screen name="Notification" component={NotificationScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="PersonalInfo" component={PersonalInfoScreen} />
+          <Stack.Screen name="ChangeName" component={ChangeNameScreen} />
+          <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
+          <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+          <Stack.Screen name="PathFinding" component={PathFindingScreen} />
+          <Stack.Screen name="PersonalityTest" component={PersonalityTestScreen} />
+          <Stack.Screen name="PersonalityResult" component={PersonalityResultScreen} />
+          {/* 로그인/온보딩 화면들 (필요시 접근 가능) */}
+          <Stack.Screen name="Intro" component={IntroScreen} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Signup" component={SignupScreen} />
+          <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
+        </>
+>>>>>>> Stashed changes
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home, Sparkles, Plus, ShoppingCart, User } from 'lucide-react-native';
+import { Home, Sparkles, Calendar, Plus, ShoppingCart, User } from 'lucide-react-native';
 import { HomeScreen } from '../screens/HomeScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { CartScreen } from '../screens/CartScreen';
 import { ConciergeScreen } from '../screens/ConciergeScreen';
 import { CreatePackageScreen } from '../screens/CreatePackageScreen';
+import { ScheduleScreen } from '../screens/ScheduleScreen';
 import { BottomTabParamList } from '../types/travelTypes';
 import { Colors } from '../theme/colors';
 
@@ -54,6 +55,14 @@ export const BottomTabNavigator = () => {
         options={{
           tabBarLabel: 'AI 추천',
           tabBarIcon: ({ color, size }) => <Sparkles color={color} size={20} />
+        }}
+      />
+      <Tab.Screen
+        name="Schedule"
+        component={ScheduleScreen}
+        options={{
+          tabBarLabel: '일정',
+          tabBarIcon: ({ color, size }) => <Calendar color={color} size={20} />
         }}
       />
       <Tab.Screen

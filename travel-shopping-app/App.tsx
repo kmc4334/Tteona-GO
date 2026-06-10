@@ -9,6 +9,7 @@ import { BudgetProvider } from './src/store/BudgetContext';
 import { AuthProvider } from './src/store/AuthContext';
 
 import { WeatherProvider } from './src/store/WeatherContext';
+import { ScheduleProvider } from './src/store/ScheduleContext';
 
 export default function App() {
   return (
@@ -20,7 +21,9 @@ export default function App() {
               <NotificationProvider>
                 <BudgetProvider>
                   <WeatherProvider>
-                    <AppNavigator />
+                    <ScheduleProvider>
+                      <AppNavigator />
+                    </ScheduleProvider>
                   </WeatherProvider>
                 </BudgetProvider>
               </NotificationProvider>

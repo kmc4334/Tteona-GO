@@ -1,0 +1,114 @@
+<!-- ══════════════════════════════════════════════
+     일정 페이지 템플릿
+     ══════════════════════════════════════════════ -->
+<section id="page-plan" class="page">
+  <!-- 탭 헤더 -->
+  <div class="plan-tabs">
+    <button class="plan-tab active" data-tab="create">
+      📝 일정 작성
+    </button>
+    <button class="plan-tab" data-tab="library">
+      📚 라이브러리
+    </button>
+  </div>
+
+  <!-- 일정 작성 탭 -->
+  <div id="plan-tab-create" class="plan-tab-content active">
+    <!-- 기본 정보 입력 -->
+    <div class="card" id="plan-info-card">
+      <h2 class="card-title">🗺️ 여행 계획 작성</h2>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">여행 제목</label>
+          <input type="text" class="form-input" id="plan-title" placeholder="예: 부산 2박 3일 감성 여행" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">여행지</label>
+          <input type="text" class="form-input" id="plan-destination" placeholder="예: 부산, 제주" />
+        </div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label class="form-label">출발일</label>
+          <input type="date" class="form-input" id="plan-start-date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">도착일</label>
+          <input type="date" class="form-input" id="plan-end-date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">인원</label>
+          <select class="form-input" id="plan-people">
+            <option value="1">혼자</option>
+            <option value="2" selected>2명</option>
+            <option value="3">3명</option>
+            <option value="4">4명</option>
+            <option value="5+">5명 이상</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-1">
+        <div class="form-group">
+          <label class="form-label">교통수단</label>
+          <select class="form-input" id="plan-transport">
+            <option value="자가용">자가용</option>
+            <option value="대중교통">대중교통</option>
+            <option value="렌터카">렌터카</option>
+            <option value="비행기">비행기</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">메모</label>
+        <textarea class="form-input form-textarea" id="plan-memo" placeholder="여행 관련 메모를 입력하세요..."></textarea>
+      </div>
+      
+      <!-- AI 추천 옵션 -->
+      <div class="ai-option-box">
+        <label class="ai-checkbox-label">
+          <input type="checkbox" id="use-ai-plan" class="ai-checkbox" />
+          <span class="ai-checkbox-text">
+            <strong>🤖 AI 추천 여행 일정 작성하기</strong>
+            <small>나의 여행 성향에 맞춰 AI가 자동으로 일정을 추천해드립니다</small>
+          </span>
+        </label>
+      </div>
+      
+      <button class="btn btn-primary btn-full" id="btn-create-schedule">세부 일정 작성하기 →</button>
+    </div>
+
+    <!-- 세부 일정표 -->
+    <div id="schedule-section" class="hidden">
+      <div class="schedule-header">
+        <h3 id="schedule-title"></h3>
+        <div class="schedule-meta" id="schedule-meta"></div>
+        <div class="schedule-actions">
+          <button id="btn-clear-plan" class="btn btn-secondary">🗑️ 일정 초기화</button>
+          <button id="btn-open-chatbot" class="btn btn-primary">🤖 AI 추천 받기</button>
+        </div>
+      </div>
+      <div id="day-schedules"></div>
+    </div>
+  </div>
+
+  <!-- 라이브러리 탭 -->
+  <div id="plan-tab-library" class="plan-tab-content">
+    <div class="library-header">
+      <h2 class="library-title">📚 저장된 여행 일정</h2>
+      <p class="library-subtitle">작성한 여행 일정을 모아볼 수 있습니다</p>
+    </div>
+    
+    <div id="library-empty" class="empty-state">
+      <div class="empty-icon">📝</div>
+      <p>작성된 여행 일정이 없습니다.<br>일정 작성 탭에서 새로운 여행을 계획해보세요!</p>
+    </div>
+    
+    <div id="library-grid" class="library-grid"></div>
+  </div>
+</section>
+
+<!-- 일정 추가 푸터 (추천 페이지에서 사용) -->
+<div class="plan-footer hidden" id="plan-footer">
+  <span id="selected-count">0개 선택됨</span>
+  <button class="btn btn-primary" id="btn-add-to-plan">일정에 추가 →</button>
+</div>

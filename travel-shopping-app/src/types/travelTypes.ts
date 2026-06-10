@@ -1,4 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { UserAnswers } from '../utils/personalityAnalyzer';
 
 export type RootStackParamList = {
   Intro: undefined;
@@ -8,6 +9,7 @@ export type RootStackParamList = {
   ProfileSetup: undefined;
   InterestSelection: undefined;
   TravelPreferences: undefined;
+  ResultPreview: undefined;
   AIReview: undefined;
   Weather: undefined;
   Map: { lat: number; lng: number; title: string };
@@ -23,12 +25,15 @@ export type RootStackParamList = {
   ChangeName: undefined;
   ChangeEmail: undefined;
   ChangePassword: undefined;
+  PersonalityTest: undefined;
+  PersonalityResult: { answers?: UserAnswers; savedResult?: any };
 };
 
 export type BottomTabParamList = {
   Home: undefined;
   AIRecommend: undefined;
   Package: undefined;
+  Schedule: undefined;
   CartTab: undefined;
   Profile: undefined;
 };
