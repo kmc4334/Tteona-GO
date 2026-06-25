@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>떠나GO 디버그</title>
+  <style>
+    body { 
+      font-family: 'Malgun Gothic', sans-serif; 
+      padding: 20px; 
+      background: #f5f5f5;
+    }
+    .status { 
+      padding: 15px; 
+      margin: 10px 0; 
+      border-radius: 8px; 
+      font-weight: bold;
+    }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+    .info { background: #d1ecf1; color: #0c5460; }
+    pre { 
+      background: #fff; 
+      padding: 15px; 
+      border-radius: 5px; 
+      overflow-x: auto;
+      border: 1px solid #ddd;
+    }
+    h1 { color: #333; }
+    h2 { color: #666; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h1>🔍 떠나GO 프론트엔드 디버그</h1>
+  <div id="results"></div>
+
+  <script src="data.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    
+    function addStatus(title, isSuccess, message, details = null) {
+      const div = document.createElement('div');
+      div.className = `status ${isSuccess ? 'success' : 'error'}`;
+      div.innerHTML = `<strong>${isSuccess ? '✅' : '❌'} ${title}</strong><br>${message}`;
+      results.appendChild(div);
+      
+      if (details) {
+        const pre = document.createElement('pre');
+        pre.textContent = JSON.stringify(details, null, 2);
+        results.appendChild(pre);
+      }
+    }
+
+    function addInfo(title, message) {
+      const div = document.createElement('div');
+      div.className = 'status info';
+      div.innerHTML = `<strong>ℹ️ ${title}</strong><br>${message}`;
+      results.appendChild(div);
+    }
+
+    // 테스트 1: QUIZ_QUESTIONS
+    try {
+      if (typeof QUIZ_QUESTIONS !== 'undefined' && QUIZ_QUESTIONS.length > 0) {
+        addStatus('QUIZ_QUESTIONS 로드', true, `${QUIZ_QUESTIONS.length}개 질문 로드됨`);
+        addInfo('첫 번째 질문', QUIZ_QUESTIONS[0].question);
+      } else {
+        addStatus('QUIZ_QUESTIONS 로드', false, 'QUIZ_QUESTIONS가 비어있거나 정의되지 않음');
+      }
+    } catch (e) {
+      addStatus('QUIZ_QUESTIONS 로드', false, e.message);
+    }
+
+    // 테스트 2: TRAVEL_TYPES
+    try {
+      if (typeof TRAVEL_TYPES !== 'undefined') {
+        const types = Object.keys(TRAVEL_TYPES);
+        addStatus('TRAVEL_TYPES 로드', true, `${types.length}개 유형 로드됨`);
+        addInfo('유형 목록', types.join(', '));
+      } else {
+        addStatus('TRAVEL_TYPES 로드', false, 'TRAVEL_TYPES가 정의되지 않음');
+      }
+    } catch (e) {
+      addStatus('TRAVEL_TYPES 로드', false, e.message);
+    }
+
+    // 테스트 3: calcTravelType 함수
+    try {
+      if (typeof calcTravelType === 'function') {
+        addStatus('calcTravelType 함수', true, '함수가 정의됨');
+        
+        // 테스트 실행
+        const testAnswers = {
+          q1: 'A', q2: 'A', q3: 'A', q4: 'A',
+          q5: 'A', q6: 'A', q7: 'A', q8: 'A',
+          q9: 'A', q10: 'A', q11: 'A', q12: 'A'
+        };
+        const result = calcTravelType(testAnswers);
+        addInfo('테스트 실행 결과', `유형: ${result}`);
+      } else {
+        addStatus('calcTravelType 함수', false, '함수가 정의되지 않음');
+      }
+    } catch (e) {
+      addStatus('calcTravelType 함수', false, e.message);
+    }
+
+    // 테스트 4: PLACES_DB
+    try {
+      if (typeof PLACES_DB !== 'undefined' && PLACES_DB.length > 0) {
+        addStatus('PLACES_DB 로드', true, `${PLACES_DB.length}개 장소 로드됨`);
+        const categories = [...new Set(PLACES_DB.map(p => p.category))];
+        addInfo('카테고리', categories.join(', '));
+      } else {
+        addStatus('PLACES_DB 로드', false, 'PLACES_DB가 비어있거나 정의되지 않음');
+      }
+    } catch (e) {
+      addStatus('PLACES_DB 로드', false, e.message);
+    }
+
+    // 테스트 5: DOM 요소 확인
+    addInfo('DOM 테스트', '이제 index.html의 DOM 요소를 확인합니다...');
+    
+    const domElements = [
+      'quiz-container',
+      'budget-step',
+      'btn-prev',
+      'btn-next',
+      'progress-fill',
+      'progress-label'
+    ];
+
+    // 새 창에서 index.html 열기
+    setTimeout(() => {
+      const h2 = document.createElement('h2');
+      h2.textContent = '📋 다음 단계';
+      results.appendChild(h2);
+      
+      const info = document.createElement('div');
+      info.className = 'status info';
+      info.innerHTML = `
+        <strong>index.html 테스트</strong><br>
+        1. 새 탭에서 <a href="index.html" target="_blank">index.html</a>을 열어주세요<br>
+        2. F12를 눌러 개발자 도구를 여세요<br>
+        3. Console 탭에서 에러 메시지를 확인하세요<br>
+        4. 에러 메시지를 복사해서 알려주세요
+      `;
+      results.appendChild(info);
+    }, 100);
+
+  </script>
+</body>
+</html>

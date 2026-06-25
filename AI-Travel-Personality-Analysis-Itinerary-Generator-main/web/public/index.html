@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>떠나GO — AI 여행 플래너</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">✈️ 떠나GO</div>
+      <nav class="nav">
+        <button class="nav-btn active" data-page="home">성향분석</button>
+        <button class="nav-btn" data-page="recommend">추천</button>
+        <button class="nav-btn" data-page="plan">일정</button>
+        <button class="nav-btn" data-page="favorites">즐겨찾기</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══════════════════════════════════════
+         ① 홈 — 여행 성향 테스트
+    ══════════════════════════════════════ -->
+    <section id="page-home" class="page active">
+
+      <!-- 분석 중 오버레이 -->
+      <div id="analyzing-overlay" class="analyzing-overlay hidden">
+        <div class="analyzing-box">
+          <div class="analyzing-spinner"></div>
+          <div class="analyzing-title">여행 DNA 분석 중...</div>
+          <div class="analyzing-sub">당신의 여행 성향을 파악하고 있어요</div>
+        </div>
+      </div>
+
+      <!-- 테스트 영역 -->
+      <div id="quiz-section">
+        <div class="hero">
+          <h1 class="hero-title">나의 여행 성향은?</h1>
+          <p class="hero-sub">12가지 질문으로 딱 맞는 여행 스타일을 찾아드려요</p>
+        </div>
+
+        <!-- 진행 바 -->
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <span class="progress-label" id="progress-label">1 / 13</span>
+        </div>
+
+        <!-- 질문 카드들 -->
+        <div id="quiz-container"></div>
+
+        <!-- 예산 슬라이더 (마지막 단계) -->
+        <div class="card hidden" id="budget-step">
+          <h2 class="card-title">💰 여행 예산을 설정해주세요</h2>
+          <p class="quiz-desc">총 여행 예산을 직접 입력하거나 슬라이더로 조절하세요</p>
+          <div class="budget-input-row">
+            <input type="number" id="budget-input" class="budget-number-input"
+              min="100000" max="5000000" step="50000" value="500000" />
+            <span class="budget-unit">원</span>
+          </div>
+          <div class="slider-wrap">
+            <span class="slider-min">10만</span>
+            <input type="range" id="budget-slider" class="budget-slider"
+              min="100000" max="5000000" step="50000" value="500000" />
+            <span class="slider-max">500만</span>
+          </div>
+          <div class="budget-display" id="budget-display">500,000원</div>
+        </div>
+
+        <!-- 네비게이션 버튼 -->
+        <div class="quiz-nav">
+          <button class="btn btn-secondary" id="btn-prev" style="visibility:hidden">← 이전</button>
+          <button class="btn btn-primary" id="btn-next">다음 →</button>
+        </div>
+      </div>
+
+      <!-- 결과 영역 (테스트 완료 후 동일 페이지에 표시) -->
+      <div id="result-section" class="hidden">
+        <!-- 유형 카드 -->
+        <div class="type-card" id="type-card">
+          <div class="type-emoji" id="type-emoji"></div>
+          <div class="type-sub" id="type-sub"></div>
+          <h2 class="type-name" id="type-name"></h2>
+          <p class="type-desc" id="type-desc"></p>
+          <div class="type-tags" id="type-tags"></div>
+        </div>
+
+        <!-- 성향 축 분석 -->
+        <div class="card" id="profile-card">
+          <h3 class="card-title">📊 나의 여행 성향 분석</h3>
+          <div id="profile-bars"></div>
+        </div>
+
+        <!-- 같은 유형 추천 -->
+        <div class="card" id="similar-rec-card">
+          <h3 class="card-title">👥 같은 성향의 사람들이 좋아한 곳</h3>
+          <div class="similar-tabs">
+            <button class="sim-tab active" data-cat="attraction">🏛 여행지</button>
+            <button class="sim-tab" data-cat="accommodation">🏨 숙소</button>
+            <button class="sim-tab" data-cat="activity">🎡 활동</button>
+            <button class="sim-tab" data-cat="cafe">☕ 카페</button>
+          </div>
+          <div id="similar-rec-list" class="similar-rec-list"></div>
+        </div>
+
+        <!-- 액션 버튼 -->
+        <div class="result-actions">
+          <button class="btn btn-secondary" id="btn-retry">🔄 성향 다시 검사하기</button>
+          <button class="btn btn-primary" id="btn-go-plan">여행 계획 작성하기 →</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════
+         ③ 추천
+    ══════════════════════════════════════ -->
+    <section id="page-recommend" class="page">
+
+      <!-- 검색 + 필터 -->
+      <div class="rec-search-wrap">
+        <div class="search-row">
+          <input class="search-input" id="search-input" placeholder="여행지, 카페, 숙소 검색..." />
+          <button class="btn btn-primary" id="btn-search">검색</button>
+        </div>
+        <!-- 추천 키워드 -->
+        <div class="keyword-chips">
+          <button class="chip" data-q="제주 힐링 여행">🌿 제주 힐링</button>
+          <button class="chip" data-q="부산 감성 카페">☕ 부산 감성</button>
+          <button class="chip" data-q="서울 야경 명소">🌃 서울 야경</button>
+        </div>
+
+        <!-- 필터 패널 토글 버튼 -->
+        <button class="filter-toggle-btn" id="btn-filter-toggle">
+          <span>🔍 필터 설정</span>
+          <span class="filter-badge hidden" id="filter-badge">0</span>
+          <span class="filter-arrow" id="filter-arrow">▼</span>
+        </button>
+
+        <!-- 필터 패널 -->
+        <div class="filter-panel hidden" id="filter-panel">
+
+          <!-- 카테고리 필터 -->
+          <div class="filter-section">
+            <div class="filter-section-title">카테고리</div>
+            <div class="filter-chip-row">
+              <button class="filter-chip active" data-filter="category" data-val="">전체</button>
+              <button class="filter-chip" data-filter="category" data-val="attraction">🏛 여행지</button>
+              <button class="filter-chip" data-filter="category" data-val="restaurant">🍽 맛집</button>
+              <button class="filter-chip" data-filter="category" data-val="cafe">☕ 카페</button>
+              <button class="filter-chip" data-filter="category" data-val="accommodation">🏨 숙소</button>
+              <button class="filter-chip" data-filter="category" data-val="activity">🎡 액티비티</button>
+            </div>
+          </div>
+
+          <!-- 지역 필터 (2-Depth 테이블) -->
+          <div class="filter-section">
+            <div class="filter-section-title">지역</div>
+            <!-- 1단계: 광역 권역 -->
+            <div class="region-table" id="region-table">
+              <button class="region-zone active" data-zone="">전체</button>
+              <button class="region-zone" data-zone="수도권">🏙️ 수도권</button>
+              <button class="region-zone" data-zone="강원권">🌊 강원권</button>
+              <button class="region-zone" data-zone="충청권">🗺️ 충청권</button>
+              <button class="region-zone" data-zone="전라북부">🪵 전라북부</button>
+              <button class="region-zone" data-zone="전라남부">⚓ 전라남부</button>
+              <button class="region-zone" data-zone="경상북부">🏺 경상북부</button>
+              <button class="region-zone" data-zone="경상남부">🐳 경상남부</button>
+              <button class="region-zone" data-zone="제주">🌴 제주</button>
+            </div>
+            <!-- 2단계: 세부 도시 칩 -->
+            <div class="region-cities hidden" id="region-cities"></div>
+          </div>
+
+          <!-- 가격 필터 (슬라이더) -->
+          <div class="filter-section">
+            <div class="filter-section-title">가격 범위</div>
+            <div class="price-range-wrap">
+              <div class="price-inputs">
+                <div class="price-input-group">
+                  <label class="price-input-label">최소</label>
+                  <div class="price-input-row">
+                    <input type="number" id="price-min-input" class="price-number-input" value="0" min="0" max="500000" step="10000" />
+                    <span class="price-unit">원</span>
+                  </div>
+                </div>
+                <div class="price-range-sep">~</div>
+                <div class="price-input-group">
+                  <label class="price-input-label">최대</label>
+                  <div class="price-input-row">
+                    <input type="number" id="price-max-input" class="price-number-input" value="500000" min="0" max="500000" step="10000" />
+                    <span class="price-unit">원</span>
+                  </div>
+                </div>
+              </div>
+              <div class="price-slider-wrap">
+                <div class="price-slider-track">
+                  <div class="price-slider-range" id="price-slider-range"></div>
+                </div>
+                <input type="range" id="price-min-slider" class="price-slider price-slider-min" min="0" max="500000" step="10000" value="0" />
+                <input type="range" id="price-max-slider" class="price-slider price-slider-max" min="0" max="500000" step="10000" value="500000" />
+              </div>
+              <div class="price-labels">
+                <span>무료</span>
+                <span>10만</span>
+                <span>20만</span>
+                <span>30만</span>
+                <span>50만+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 필터 액션 -->
+          <div class="filter-actions">
+            <button class="btn btn-secondary" id="btn-filter-reset">초기화</button>
+            <button class="btn btn-primary" id="btn-filter-apply">필터 적용</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 추천 섹션들 (검색 전) -->
+      <div id="rec-sections">
+        <!-- 같은 유형 추천 -->
+        <div class="rec-section">
+          <h3 class="rec-section-title">👥 나와 같은 유형이 선택한 추천</h3>
+          <div class="rec-scroll-row" id="rec-similar-row"></div>
+        </div>
+        <!-- 지금 떠나기 좋은 -->
+        <div class="rec-section">
+          <h3 class="rec-section-title">🌤 지금 떠나기 좋은 여행</h3>
+          <div class="rec-scroll-row" id="rec-season-row"></div>
+        </div>
+        <!-- 이런 여행은 어떠세요 -->
+        <div class="rec-section">
+          <h3 class="rec-section-title">✨ 이런 여행은 어떠세요?</h3>
+          <div class="rec-scroll-row" id="rec-theme-row"></div>
+        </div>
+      </div>
+
+      <!-- 검색 결과 -->
+      <div id="search-result-wrap" class="hidden">
+        <div class="search-result-header">
+          <span id="search-result-title"></span>
+          <button class="btn-text" id="btn-clear-search">← 전체 보기</button>
+        </div>
+        <div id="recommend-loading" class="loading hidden">
+          <div class="spinner"></div><span>검색 중...</span>
+        </div>
+        <div id="recommend-grid" class="item-grid"></div>
+      </div>
+
+      <!-- 일정 추가 푸터 (일정 페이지에서 넘어온 경우) -->
+      <div class="plan-footer hidden" id="plan-footer">
+        <span id="selected-count">0개 선택됨</span>
+        <button class="btn btn-primary" id="btn-add-to-plan">일정에 추가 →</button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         ④ 장소 세부 페이지
+    ══════════════════════════════════════ -->
+    <section id="page-detail" class="page">
+      <button class="back-btn" id="btn-back-detail">← 뒤로</button>
+      <div id="detail-content"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         ⑤ 일정 & 라이브러리 (탭 통합)
+    ══════════════════════════════════════ -->
+    <section id="page-plan" class="page">
+      <!-- 탭 헤더 -->
+      <div class="plan-tabs">
+        <button class="plan-tab active" data-tab="create">
+          📝 일정 작성
+        </button>
+        <button class="plan-tab" data-tab="library">
+          📚 라이브러리
+        </button>
+      </div>
+
+      <!-- 일정 작성 탭 -->
+      <div id="plan-tab-create" class="plan-tab-content active">
+      <!-- 기본 정보 입력 -->
+      <div class="card" id="plan-info-card">
+        <h2 class="card-title">🗺️ 여행 계획 작성</h2>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">여행 제목</label>
+            <input type="text" class="form-input" id="plan-title" placeholder="예: 부산 2박 3일 감성 여행" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">여행지</label>
+            <input type="text" class="form-input" id="plan-destination" placeholder="예: 부산, 제주" />
+          </div>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">출발일</label>
+            <input type="date" class="form-input" id="plan-start-date" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">도착일</label>
+            <input type="date" class="form-input" id="plan-end-date" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">인원</label>
+            <select class="form-input" id="plan-people">
+              <option value="1">혼자</option>
+              <option value="2" selected>2명</option>
+              <option value="3">3명</option>
+              <option value="4">4명</option>
+              <option value="5+">5명 이상</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-1">
+          <div class="form-group">
+            <label class="form-label">교통수단</label>
+            <select class="form-input" id="plan-transport">
+              <option value="자가용">자가용</option>
+              <option value="대중교통">대중교통</option>
+              <option value="렌터카">렌터카</option>
+              <option value="비행기">비행기</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">메모</label>
+          <textarea class="form-input form-textarea" id="plan-memo" placeholder="여행 관련 메모를 입력하세요..."></textarea>
+        </div>
+        
+        <!-- AI 추천 옵션 -->
+        <div class="ai-option-box">
+          <label class="ai-checkbox-label">
+            <input type="checkbox" id="use-ai-plan" class="ai-checkbox" />
+            <span class="ai-checkbox-text">
+              <strong>🤖 AI 추천 여행 일정 작성하기</strong>
+              <small>나의 여행 성향에 맞춰 AI가 자동으로 일정을 추천해드립니다</small>
+            </span>
+          </label>
+        </div>
+        
+        <button class="btn btn-primary btn-full" id="btn-create-schedule">세부 일정 작성하기 →</button>
+      </div>
+
+      <!-- 세부 일정표 -->
+      <div id="schedule-section" class="hidden">
+        <div class="schedule-header">
+          <h3 id="schedule-title"></h3>
+          <div class="schedule-meta" id="schedule-meta"></div>
+          <div class="schedule-actions">
+            <button id="btn-clear-plan" class="btn btn-secondary">🗑️ 일정 초기화</button>
+            <button id="btn-open-chatbot" class="btn btn-primary">🤖 AI 추천 받기</button>
+          </div>
+        </div>
+        <div id="day-schedules"></div>
+      </div>
+      </div>
+
+      <!-- 라이브러리 탭 -->
+      <div id="plan-tab-library" class="plan-tab-content">
+        <div class="library-header">
+          <h2 class="library-title">📚 저장된 여행 일정</h2>
+          <p class="library-subtitle">작성한 여행 일정을 모아볼 수 있습니다</p>
+        </div>
+        
+        <div id="library-empty" class="empty-state">
+          <div class="empty-icon">📝</div>
+          <p>작성된 여행 일정이 없습니다.<br>일정 작성 탭에서 새로운 여행을 계획해보세요!</p>
+        </div>
+        
+        <div id="library-grid" class="library-grid"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         라이브러리 페이지 제거 (일정과 통합됨)
+    ══════════════════════════════════════ -->
+
+    <!-- ══════════════════════════════════════
+         ⑥ 즐겨찾기
+    ══════════════════════════════════════ -->
+    <div id="chatbot-modal" class="modal hidden">
+      <div class="modal-overlay" id="chatbot-overlay"></div>
+      <div class="modal-content chatbot-container">
+        <div class="chatbot-header">
+          <h3 class="chatbot-title">🤖 AI 여행 추천 챗봇</h3>
+          <button class="modal-close-btn" id="btn-close-chatbot">✕</button>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbot-messages">
+          <div class="chat-message bot">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              안녕하세요! AI 여행 추천 챗봇입니다.<br>
+              현재 일정표를 분석하여 방문 지역 주변의 장소를 추천해드려요!<br><br>
+              예를 들어:<br>
+              • "맛집 추천해줘" - 일정 지역의 맛집 추천<br>
+              • "제주 카페 추천" - 제주 지역 카페 추천<br>
+              • "주변 관광지" - 일정 지역의 관광지 추천
+            </div>
+          </div>
+        </div>
+        
+        <div class="chatbot-input-area">
+          <input 
+            type="text" 
+            id="chatbot-input" 
+            class="chatbot-input" 
+            placeholder="메시지를 입력하세요..."
+          />
+          <button id="btn-send-message" class="btn btn-primary">전송</button>
+        </div>
+        
+        <!-- 추천 장소 선택 영역 -->
+        <div id="chatbot-recommendations" class="chatbot-recommendations hidden">
+          <div class="chatbot-rec-header">
+            <h4>추천 장소</h4>
+            <span id="chatbot-selected-count">0개 선택됨</span>
+          </div>
+          <div id="chatbot-rec-list" class="chatbot-rec-list"></div>
+          <div class="chatbot-rec-actions">
+            <button id="btn-add-chatbot-places" class="btn btn-primary btn-full">선택한 장소 일정에 추가</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         라이브러리 섹션 제거됨 (일정 탭으로 통합)
+    ══════════════════════════════════════ -->
+
+    <!-- ══════════════════════════════════════
+         일정 상세보기 모달
+    ══════════════════════════════════════ -->
+    <div id="plan-detail-modal" class="modal hidden">
+      <div class="modal-overlay" id="plan-detail-overlay"></div>
+      <div class="modal-content plan-detail-container">
+        <div class="plan-detail-header">
+          <h3 class="plan-detail-title" id="plan-detail-title"></h3>
+          <button class="modal-close-btn" id="btn-close-plan-detail">✕</button>
+        </div>
+        
+        <div class="plan-detail-body" id="plan-detail-body">
+          <!-- 일정 정보 -->
+          <div class="plan-detail-info" id="plan-detail-info"></div>
+          
+          <!-- Day별 일정 -->
+          <div class="plan-detail-days" id="plan-detail-days"></div>
+        </div>
+        
+        <div class="plan-detail-actions">
+          <button class="btn btn-secondary" id="btn-delete-plan" onclick="handleDeletePlan()">🗑️ 삭제</button>
+          <button class="btn btn-primary" id="btn-edit-plan" onclick="handleEditPlan()">✏️ 수정하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         ⑦ 즐겨찾기
+    ══════════════════════════════════════ -->
+    <section id="page-favorites" class="page">
+      <h2 class="page-heading">❤️ 즐겨찾기</h2>
+      
+      <!-- 탭 -->
+      <div class="favorites-tabs">
+        <button class="fav-tab active" data-type="places">📍 장소</button>
+        <button class="fav-tab" data-type="plans">🗺️ 여행 일정</button>
+      </div>
+      
+      <!-- 장소 즐겨찾기 -->
+      <div id="favorites-places-section" class="fav-section">
+        <div id="favorites-places-empty" class="empty-state">
+          <div class="empty-icon">🔖</div>
+          <p>저장된 장소가 없습니다.<br>추천 페이지에서 장소를 즐겨찾기해보세요!</p>
+          <button class="btn btn-primary mt-16" onclick="goToPage('recommend')">추천 보러가기</button>
+        </div>
+        <div id="favorites-places-grid" class="item-grid"></div>
+      </div>
+      
+      <!-- 여행 일정 즐겨찾기 -->
+      <div id="favorites-plans-section" class="fav-section hidden">
+        <div id="favorites-plans-empty" class="empty-state">
+          <div class="empty-icon">⭐</div>
+          <p>저장된 여행 일정이 없습니다.<br>라이브러리에서 마음에 드는 일정을 즐겨찾기해보세요!</p>
+          <button class="btn btn-primary mt-16" onclick="goToLibraryTab()">라이브러리 보기</button>
+        </div>
+        <div id="favorites-plans-grid" class="library-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 토스트 알림 컨테이너 -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- 확인 다이얼로그 -->
+  <div id="confirm-dialog" class="confirm-dialog hidden">
+    <div class="confirm-box">
+      <div class="confirm-icon" id="confirm-icon">❓</div>
+      <h3 class="confirm-title" id="confirm-title">확인</h3>
+      <p class="confirm-message" id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="confirm-cancel">취소</button>
+        <button class="btn btn-primary" id="confirm-ok">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="ai-algorithms.js"></script>
+  <script src="app-simple.js"></script>
+</body>
+</html>

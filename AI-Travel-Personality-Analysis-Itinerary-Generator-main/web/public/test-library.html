@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Tab Test</title>
+  <style>
+    body {
+      font-family: 'Pretendard', Arial, sans-serif;
+      margin: 20px;
+      background: #f4f6fb;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+      color: #4F7EFF;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 8px;
+      border: none;
+      background: #4F7EFF;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #3563e9;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background: #f4f6fb;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    .success {
+      color: #48BB78;
+      font-weight: 600;
+    }
+    .error {
+      color: #FF6B6B;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Library Tab Implementation Test</h1>
+  
+  <div class="test-section">
+    <h2>1. localStorage Functions</h2>
+    <button onclick="testGetLibrary()">Test getLibraryPlans()</button>
+    <button onclick="testAddPlan()">Add Test Plan</button>
+    <button onclick="testClearLibrary()">Clear Library</button>
+    <div id="result1" class="result"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>2. Tab Elements</h2>
+    <button onclick="testTabElements()">Check Tab Elements</button>
+    <button onclick="testTabClasses()">Check Classes</button>
+    <div id="result2" class="result"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>3. Library Grid</h2>
+    <button onclick="testLibraryGrid()">Check Grid Elements</button>
+    <button onclick="testRenderLibrary()">Test Render</button>
+    <div id="result3" class="result"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>4. Full Integration</h2>
+    <button onclick="openMainPage()">Open Main Page</button>
+    <button onclick="runFullTest()">Run Full Test Suite</button>
+    <div id="result4" class="result"></div>
+  </div>
+
+  <script>
+    const LIBRARY_STORAGE_KEY = 'tteonago_library';
+    
+    function log(element, message, type = 'info') {
+      const el = document.getElementById(element);
+      const timestamp = new Date().toLocaleTimeString();
+      const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+      el.innerHTML += `\n${icon} [${timestamp}] ${message}`;
+    }
+    
+    function clear(element) {
+      document.getElementById(element).innerHTML = '';
+    }
+    
+    // Test 1: localStorage Functions
+    function testGetLibrary() {
+      clear('result1');
+      try {
+        const saved = localStorage.getItem(LIBRARY_STORAGE_KEY);
+        const plans = saved ? JSON.parse(saved) : [];
+        log('result1', `Found ${plans.length} plans in library`, 'success');
+        log('result1', JSON.stringify(plans, null, 2));
+      } catch (e) {
+        log('result1', `Error: ${e.message}`, 'error');
+      }
+    }
+    
+    function testAddPlan() {
+      clear('result1');
+      try {
+        const plans = JSON.parse(localStorage.getItem(LIBRARY_STORAGE_KEY) || '[]');
+        const testPlan = {
+          id: 'test_' + Date.now(),
+          title: 'Test Plan ' + plans.length,
+          destination: '테스트 도시',
+          startDate: '2026-06-10',
+          endDate: '2026-06-12',
+          people: '2',
+          budget: '500,000원',
+          transport: '자가용',
+          memo: 'This is a test plan',
+          days: [
+            { day: 1, date: '2026-06-10', slots: [] },
+            { day: 2, date: '2026-06-11', slots: [] },
+            { day: 3, date: '2026-06-12', slots: [] }
+          ],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        plans.unshift(testPlan);
+        localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(plans));
+        log('result1', 'Test plan added successfully!', 'success');
+        log('result1', `Total plans: ${plans.length}`);
+      } catch (e) {
+        log('result1', `Error: ${e.message}`, 'error');
+      }
+    }
+    
+    function testClearLibrary() {
+      clear('result1');
+      if (confirm('Clear all library data?')) {
+        localStorage.removeItem(LIBRARY_STORAGE_KEY);
+        log('result1', 'Library cleared', 'success');
+      }
+    }
+    
+    // Test 2: Tab Elements
+    function testTabElements() {
+      clear('result2');
+      const tabs = [
+        'plan-tab-create',
+        'plan-tab-library',
+        'library-empty',
+        'library-grid'
+      ];
+      
+      tabs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          log('result2', `✓ Found: #${id}`, 'success');
+        } else {
+          log('result2', `✗ Missing: #${id}`, 'error');
+        }
+      });
+    }
+    
+    function testTabClasses() {
+      clear('result2');
+      const createTab = document.getElementById('plan-tab-create');
+      const libraryTab = document.getElementById('plan-tab-library');
+      
+      if (createTab && libraryTab) {
+        log('result2', `Create tab classes: ${createTab.className}`, 'info');
+        log('result2', `Library tab classes: ${libraryTab.className}`, 'info');
+        log('result2', 'Tab elements found', 'success');
+      } else {
+        log('result2', 'Tab elements not found - wrong page?', 'error');
+      }
+    }
+    
+    // Test 3: Library Grid
+    function testLibraryGrid() {
+      clear('result3');
+      const grid = document.getElementById('library-grid');
+      const empty = document.getElementById('library-empty');
+      
+      if (grid) {
+        log('result3', '✓ library-grid found', 'success');
+        log('result3', `Classes: ${grid.className}`);
+        log('result3', `Children: ${grid.children.length}`);
+      } else {
+        log('result3', '✗ library-grid not found', 'error');
+      }
+      
+      if (empty) {
+        log('result3', '✓ library-empty found', 'success');
+        log('result3', `Classes: ${empty.className}`);
+      } else {
+        log('result3', '✗ library-empty not found', 'error');
+      }
+    }
+    
+    function testRenderLibrary() {
+      clear('result3');
+      if (typeof renderLibrary === 'function') {
+        log('result3', 'Calling renderLibrary()...', 'info');
+        try {
+          renderLibrary();
+          log('result3', 'renderLibrary() executed', 'success');
+        } catch (e) {
+          log('result3', `Error: ${e.message}`, 'error');
+        }
+      } else {
+        log('result3', 'renderLibrary() not found - wrong page?', 'error');
+      }
+    }
+    
+    // Test 4: Integration
+    function openMainPage() {
+      window.location.href = 'index.html';
+    }
+    
+    function runFullTest() {
+      clear('result4');
+      log('result4', '🚀 Running full test suite...', 'info');
+      
+      setTimeout(() => {
+        log('result4', '\n1. Testing localStorage...', 'info');
+        testGetLibrary();
+        
+        setTimeout(() => {
+          log('result4', '\n2. Adding test plan...', 'info');
+          testAddPlan();
+          
+          setTimeout(() => {
+            log('result4', '\n✅ Test complete! Open main page to verify.', 'success');
+          }, 500);
+        }, 500);
+      }, 500);
+    }
+    
+    // Auto-run on load
+    window.addEventListener('DOMContentLoaded', () => {
+      log('result4', 'Test page loaded', 'success');
+      log('result4', 'Click "Run Full Test Suite" to begin', 'info');
+    });
+  </script>
+</body>
+</html>

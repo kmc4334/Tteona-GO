@@ -1,0 +1,57 @@
+# 빌드 결과물
+bin/
+dist/
+dist-ssr/
+build/
+*.exe
+*.so
+*.dylib
+
+# IDE 설정
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 의존성
+vendor/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# 환경 변수
+.env
+.env.local
+.env.*.local
+*.local
+
+# 로그
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 임시 파일
+*.tmp
+*.bak
+*-backup.js
+*-broken.js
+*-original.js
+
+# 프로그레스 및 내부 노트
+WEB_PROGRESS.md
+RESEARCH.md
+
+# OS 파일
+Thumbs.db
+.DS_Store

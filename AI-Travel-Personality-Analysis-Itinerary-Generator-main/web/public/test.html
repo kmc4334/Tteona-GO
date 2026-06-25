@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>떠나GO 테스트</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+  <h1>떠나GO 디버깅 테스트</h1>
+  <div id="test-results"></div>
+
+  <script src="data.js"></script>
+  <script>
+    const results = [];
+    
+    // 테스트 1: QUIZ_QUESTIONS 로드 확인
+    try {
+      if (typeof QUIZ_QUESTIONS !== 'undefined') {
+        results.push({ name: 'QUIZ_QUESTIONS 로드', status: 'success', message: `${QUIZ_QUESTIONS.length}개 질문 로드됨` });
+      } else {
+        results.push({ name: 'QUIZ_QUESTIONS 로드', status: 'error', message: 'QUIZ_QUESTIONS가 정의되지 않음' });
+      }
+    } catch (e) {
+      results.push({ name: 'QUIZ_QUESTIONS 로드', status: 'error', message: e.message });
+    }
+
+    // 테스트 2: TRAVEL_TYPES 로드 확인
+    try {
+      if (typeof TRAVEL_TYPES !== 'undefined') {
+        const typeCount = Object.keys(TRAVEL_TYPES).length;
+        results.push({ name: 'TRAVEL_TYPES 로드', status: 'success', message: `${typeCount}개 유형 로드됨` });
+      } else {
+        results.push({ name: 'TRAVEL_TYPES 로드', status: 'error', message: 'TRAVEL_TYPES가 정의되지 않음' });
+      }
+    } catch (e) {
+      results.push({ name: 'TRAVEL_TYPES 로드', status: 'error', message: e.message });
+    }
+
+    // 테스트 3: calcTravelType 함수 확인
+    try {
+      if (typeof calcTravelType === 'function') {
+        results.push({ name: 'calcTravelType 함수', status: 'success', message: '함수 정의됨' });
+      } else {
+        results.push({ name: 'calcTravelType 함수', status: 'error', message: '함수가 정의되지 않음' });
+      }
+    } catch (e) {
+      results.push({ name: 'calcTravelType 함수', status: 'error', message: e.message });
+    }
+
+    // 테스트 4: PLACES_DB 로드 확인
+    try {
+      if (typeof PLACES_DB !== 'undefined') {
+        results.push({ name: 'PLACES_DB 로드', status: 'success', message: `${PLACES_DB.length}개 장소 로드됨` });
+      } else {
+        results.push({ name: 'PLACES_DB 로드', status: 'error', message: 'PLACES_DB가 정의되지 않음' });
+      }
+    } catch (e) {
+      results.push({ name: 'PLACES_DB 로드', status: 'error', message: e.message });
+    }
+
+    // 테스트 5: 첫 번째 질문 구조 확인
+    try {
+      const q1 = QUIZ_QUESTIONS[0];
+      if (q1 && q1.id && q1.question && q1.options) {
+        results.push({ name: '질문 구조', status: 'success', message: `첫 질문: ${q1.question}` });
+      } else {
+        results.push({ name: '질문 구조', status: 'error', message: '질문 구조가 올바르지 않음' });
+      }
+    } catch (e) {
+      results.push({ name: '질문 구조', status: 'error', message: e.message });
+    }
+
+    // 결과 표시
+    const container = document.getElementById('test-results');
+    results.forEach(result => {
+      const div = document.createElement('div');
+      div.className = `test-result ${result.status}`;
+      div.innerHTML = `<strong>${result.name}:</strong> ${result.message}`;
+      container.appendChild(div);
+    });
+
+    // 전체 요약
+    const successCount = results.filter(r => r.status === 'success').length;
+    const totalCount = results.length;
+    const summary = document.createElement('div');
+    summary.style.marginTop = '20px';
+    summary.style.padding = '15px';
+    summary.style.background = successCount === totalCount ? '#d4edda' : '#fff3cd';
+    summary.style.borderRadius = '5px';
+    summary.innerHTML = `<h2>테스트 결과: ${successCount}/${totalCount} 성공</h2>`;
+    container.appendChild(summary);
+
+    console.log('테스트 결과:', results);
+  </script>
+</body>
+</html>

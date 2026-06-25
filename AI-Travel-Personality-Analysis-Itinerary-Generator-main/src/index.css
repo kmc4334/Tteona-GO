@@ -1,0 +1,43 @@
+/* ══════════════════════════════════════════════
+   index.css
+   글로벌 스타일 - 떠나GO 디자인 시스템
+   ══════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary:   #4F7EFF;
+  --primary-d: #3563e9;
+  --primary-l: #EEF3FF;
+  --accent:    #FF6B6B;
+  --green:     #48BB78;
+  --bg:        #F4F6FB;
+  --surface:   #FFFFFF;
+  --border:    #E2E8F0;
+  --text:      #1A202C;
+  --muted:     #718096;
+  --radius:    14px;
+  --shadow:    0 4px 24px rgba(0,0,0,.08);
+  --t:         .2s ease;
+}
+
+body {
+  margin: 0;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--text);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+#root {
+  min-height: 100vh;
+}
