@@ -1,0 +1,24 @@
+# Dependency directories
+node_modules/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+
+# Expo/React Native
+.expo/
+*.jks
+*.p8
+*.pyc
+*.keystore
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
