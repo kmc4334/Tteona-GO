@@ -28,6 +28,15 @@ export const PersonalityTestScreen = () => {
   const handleAnswer = (value: string) => {
     const newAnswers = { ...answers, [currentQuestion.id]: value };
     setAnswers(newAnswers);
+    
+    // 선택 후 자동으로 다음 질문으로 이동 (300ms 딜레이)
+    setTimeout(() => {
+      if (isLastQuestion) {
+        navigation.navigate('PersonalityResult', { answers: newAnswers });
+      } else {
+        setCurrentIndex(currentIndex + 1);
+      }
+    }, 300);
   };
 
   const handleNext = () => {

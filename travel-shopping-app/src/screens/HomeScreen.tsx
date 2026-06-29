@@ -33,6 +33,47 @@ export const HomeScreen = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  // 배너 슬라이드 데이터
+  const bannerSlides = [
+    {
+      id: 0,
+      emoji: '🌸',
+      title: '봄 맞이 여행',
+      subtitle: '최대 35% 할인 · 선착순 예약 중',
+      gradient: ['#667eea', '#764ba2'],
+    },
+    {
+      id: 1,
+      emoji: '🤖',
+      title: 'AI 챗봇 추천',
+      subtitle: '대화하듯 편하게 물어보세요',
+      gradient: ['#f093fb', '#f5576c'],
+    },
+    {
+      id: 2,
+      emoji: '🎯',
+      title: '여행 성향 분석',
+      subtitle: '12가지 질문으로 나만의 여행 스타일 발견',
+      gradient: ['#4facfe', '#00f2fe'],
+    },
+    {
+      id: 3,
+      emoji: '📅',
+      title: 'AI 일정 생성',
+      subtitle: 'AI가 최적의 일정을 만들어드려요',
+      gradient: ['#43e97b', '#38f9d7'],
+    },
+  ];
+
+  // 배너 자동 전환 (3초마다)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % bannerSlides.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -162,19 +203,80 @@ export const HomeScreen = () => {
           </View>
         </View>
 
-        {/* ── Promo Banner ── */}
+        {/* ── Promo Banner (슬라이딩) ── */}
         <View style={styles.bannerContainer}>
           <View style={styles.bannerWrapper}>
-            <Image
-              source={{ uri: 'https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&q=80&w=1200' }}
-              style={styles.bannerImg}
-            />
-            <View style={styles.bannerOverlay}>
-              <View style={styles.priceTag}>
-                <Text style={styles.priceTagText}>🔥 이번 주 특가</Text>
-              </View>
-              <Text style={styles.bannerTitle}>봄 맞이 여행</Text>
-              <Text style={styles.bannerSubtitle}>최대 35% 할인 · 선착순 예약 중</Text>
+            {bannerSlides.map((slide, index) => (
+              <TouchableOpacity
+                key={slide.id}
+                activeOpacity={0.9}
+                onPress={() => {
+                  // 각 배너 클릭 시 해당 페이지로 이동
+                  if (index === 0) {
+                    // 봄 맞이 여행 - 특가 상품 페이지 (현재는 홈)
+                    // navigation.navigate('Home' as any);
+                  } else if (index === 1) {
+                    // AI 챗봇 추천 상세 페이지
+                    (navigation as any).navigate('BannerDetail', { type: 'chatbot' });
+                  } else if (index === 2) {
+                    // 여행 성향 분석 상세 페이지
+                    (navigation as any).navigate('BannerDetail', { type: 'personality' });
+                  } else if (index === 3) {
+                    // AI 일정 생성 상세 페이지
+                    (navigation as any).navigate('BannerDetail', { type: 'itinerary' });
+                  }
+                }}
+                style={[
+                  styles.bannerSlide,
+                  currentBannerIndex === index && styles.bannerSlideActive,
+                  {
+                    backgroundColor: slide.gradient[0],
+                  },
+                ]}
+              >
+                <View style={styles.bannerOverlay}>
+                  <View style={styles.priceTag}>
+                    <Text style={styles.priceTagText}>🔥 이번 주 특가</Text>
+                  </View>
+                  <Text style={styles.bannerEmoji}>{slide.emoji}</Text>
+                  <Text style={styles.bannerTitle}>{slide.title}</Text>
+                  <Text style={styles.bannerSubtitle}>{slide.subtitle}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+            
+            {/* 이전 버튼 */}
+            <TouchableOpacity
+              style={[styles.navButton, styles.navButtonLeft]}
+              onPress={() => {
+                setCurrentBannerIndex((prev) => (prev - 1 + bannerSlides.length) % bannerSlides.length);
+              }}
+            >
+              <Text style={styles.navButtonText}>‹</Text>
+            </TouchableOpacity>
+
+            {/* 다음 버튼 */}
+            <TouchableOpacity
+              style={[styles.navButton, styles.navButtonRight]}
+              onPress={() => {
+                setCurrentBannerIndex((prev) => (prev + 1) % bannerSlides.length);
+              }}
+            >
+              <Text style={styles.navButtonText}>›</Text>
+            </TouchableOpacity>
+            
+            {/* 인디케이터 */}
+            <View style={styles.bannerIndicators}>
+              {bannerSlides.map((_, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.indicatorDot,
+                    currentBannerIndex === index && styles.indicatorDotActive,
+                  ]}
+                  onPress={() => setCurrentBannerIndex(index)}
+                />
+              ))}
             </View>
           </View>
         </View>
@@ -373,9 +475,40 @@ const styles = StyleSheet.create({
   tagText: { fontSize: 13, color: '#4A5568', fontWeight: '700' },
 
   bannerContainer: { paddingHorizontal: 20, marginBottom: 20 },
-  bannerWrapper: { overflow: 'hidden', borderRadius: 32 },
+  bannerWrapper: { 
+    overflow: 'hidden', 
+    borderRadius: 32,
+    height: 220,
+    position: 'relative',
+  },
+  bannerSlide: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: 220,
+    opacity: 0,
+    borderRadius: 32,
+  },
+  bannerSlideActive: {
+    opacity: 1,
+    zIndex: 1,
+  },
   bannerImg: { width: '100%', height: 220 },
-  bannerOverlay: { position: 'absolute', bottom: 25, left: 30, right: 30 },
+  bannerOverlay: { 
+    position: 'absolute', 
+    bottom: 25, 
+    left: 30, 
+    right: 30,
+    zIndex: 2,
+  },
+  bannerEmoji: {
+    fontSize: 48,
+    marginBottom: 10,
+    textAlign: 'left',
+  },
   priceTag: {
     backgroundColor: 'rgba(255,255,255,0.3)',
     paddingHorizontal: 12,
@@ -387,6 +520,59 @@ const styles = StyleSheet.create({
   priceTagText: { color: '#fff', fontSize: 12, fontWeight: '800' },
   bannerTitle: { fontSize: 32, fontWeight: '900', color: '#fff', marginBottom: 6, letterSpacing: -1 },
   bannerSubtitle: { fontSize: 15, color: 'rgba(255,255,255,0.95)', fontWeight: '700' },
+  
+  // 네비게이션 버튼 (< >)
+  navButton: {
+    position: 'absolute',
+    top: '50%',
+    transform: [{ translateY: -20 }],
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  navButtonLeft: {
+    left: -10,
+  },
+  navButtonRight: {
+    right: -10,
+  },
+  navButtonText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginTop: -3,
+  },
+  
+  bannerIndicators: {
+    position: 'absolute',
+    bottom: 15,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+    zIndex: 10,
+  },
+  indicatorDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  indicatorDotActive: {
+    width: 24,
+    backgroundColor: '#fff',
+  },
 
   aiCard: {
     backgroundColor: '#fff',

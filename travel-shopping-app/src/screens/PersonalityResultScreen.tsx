@@ -266,19 +266,19 @@ export const PersonalityResultScreen = () => {
         {/* Actions */}
         <View style={styles.actionsContainer}>
           <TouchableOpacity 
-            style={styles.actionBtnSecondary}
+            style={[styles.actionBtnPrimary, { backgroundColor: typeData.color }]}
             onPress={handleRetakeTest}
           >
-            <RefreshCw size={20} color="#4A90E2" strokeWidth={2} />
-            <Text style={styles.actionBtnTextSecondary}>다시 검사하기</Text>
+            <RefreshCw size={20} color="#fff" strokeWidth={2} />
+            <Text style={styles.actionBtnTextPrimary}>다시 검사하기</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
-            style={[styles.actionBtnPrimary, { backgroundColor: typeData.color }]}
-            onPress={() => navigation.navigate('CreatePackage')}
+            style={styles.actionBtnSecondary}
+            onPress={() => navigation.navigate('Main')}
           >
-            <Map size={20} color="#fff" strokeWidth={2} />
-            <Text style={styles.actionBtnTextPrimary}>맞춤형 일정 작성하기</Text>
+            <X size={20} color="#4A90E2" strokeWidth={2} />
+            <Text style={styles.actionBtnTextSecondary}>나가기</Text>
           </TouchableOpacity>
         </View>
 
