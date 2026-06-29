@@ -1,0 +1,358 @@
+/* ══════════════════════════════════════════════
+   일정 페이지 스타일
+   ══════════════════════════════════════════════ */
+
+/* ── 일정 탭 ────────────────────────────────── */
+.plan-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--border);
+}
+
+.plan-tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.plan-tab:hover {
+  color: var(--text);
+  background: var(--bg-hover);
+}
+
+.plan-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* ── 폼 레이아웃 ─────────────────────────────── */
+.form-row-1,
+.form-row-2,
+.form-row-3 {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-row-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-row-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .form-row-2,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-input {
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(70, 130, 255, 0.1);
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* ── AI 옵션 ─────────────────────────────────── */
+.ai-option-box {
+  padding: 16px;
+  background: linear-gradient(135deg, #f0f4ff 0%, #fff5f5 100%);
+  border: 2px dashed var(--primary);
+  border-radius: 12px;
+  margin: 16px 0;
+}
+
+.ai-checkbox-label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.ai-checkbox {
+  margin-top: 4px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.ai-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ai-checkbox-text strong {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.ai-checkbox-text small {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* ── 일정표 헤더 ─────────────────────────────── */
+.schedule-header {
+  margin-bottom: 24px;
+}
+
+.schedule-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.schedule-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.schedule-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── Day 카드 ────────────────────────────────── */
+.day-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.day-header {
+  background: var(--primary);
+  color: white;
+  padding: 16px;
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.day-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── 슬롯 아이템 ─────────────────────────────── */
+.slot-item {
+  display: grid;
+  grid-template-columns: 80px 48px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  background: var(--bg);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.slot-item:hover {
+  background: var(--bg-hover);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.slot-time-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.slot-time-input {
+  width: 100%;
+  padding: 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.slot-time-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.slot-icon {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.slot-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.slot-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.slot-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.slot-delete-btn {
+  padding: 8px 12px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.slot-delete-btn:hover {
+  background: #fee;
+  border-color: #e74c3c;
+  transform: scale(1.05);
+}
+
+/* ── 장소 추가 버튼 ──────────────────────────── */
+.add-slot-btn {
+  width: 100%;
+  padding: 16px;
+  background: white;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-slot-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* ── 일정 추가 푸터 ──────────────────────────── */
+.plan-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 2px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.plan-footer.hidden {
+  display: none;
+}
+
+#selected-count {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── 라이브러리 ──────────────────────────────── */
+.library-header {
+  margin-bottom: 32px;
+}
+
+.library-title {
+  font-size: 1.75rem;
+  margin-bottom: 8px;
+}
+
+.library-subtitle {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ── Empty State ─────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--muted);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ── 반응형 ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .slot-item {
+    grid-template-columns: 70px 40px 1fr auto;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .slot-icon {
+    font-size: 1.5rem;
+  }
+
+  .schedule-actions {
+    width: 100%;
+  }
+
+  .schedule-actions .btn {
+    flex: 1;
+  }
+}

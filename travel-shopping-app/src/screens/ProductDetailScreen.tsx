@@ -27,6 +27,7 @@ import { useCart } from '../store/CartContext';
 import { usePackage } from '../store/PackageContext';
 import { useActivity } from '../store/ActivityContext';
 import { useNotifications } from '../store/NotificationContext';
+import { KakaoMap } from '../components/KakaoMap';
 
 
 
@@ -270,35 +271,30 @@ export const ProductDetailScreen = () => {
 
   const handleToggleLike = () => toggleLike(product);
 
-  // ── 결제 화면으로 이동 ──────────────────────────────────────────────────────
-  const handleCheckout = () => {
-    const checkoutItem = {
-      productId: product?.id || String(Math.random()),
-      title,
-      image,
-      category,
-      price: totalPrice,
-      quantity: 1,
-      ...(isAccommodation && {
-        checkInDate:  formatDate(checkIn),
+  const handleBookNow = () => {
+    if (isAccommodation) {
+      addBooking({
+        ...product,
+        price: totalPrice,
+        checkInDate: formatDate(checkIn),
         checkOutDate: formatDate(checkOut),
-        nights,
         guests,
-      }),
-      ...(isExperience && {
-        experienceDate: formatDate(experienceDate),
+      } as any);
+    } else if (isExperience) {
+      addBooking({
+        ...product,
+        price: totalPrice,
+        checkInDate: formatDate(experienceDate),
+        checkOutDate: formatDate(experienceDate),
         experienceSlot,
         guests: expGuests,
-      }),
-    };
-    (navigation as any).navigate('Checkout', {
-      items:    [checkoutItem],
-      subtotal: totalPrice,
-      discountAmount: 0,
-    });
+      } as any);
+    } else {
+      addBooking({ ...product, price: totalPrice } as any);
+    }
+    addNotification({ title: '예약 완료', message: `'${title}' 예약이 완료되었습니다. 내 활동에서 확인하세요!`, type: 'alert' });
+    navigation.navigate('MyActivity');
   };
-
-  const handleBookNow = () => handleCheckout();
 
   const handleExternalBooking = () => {
     if (externalUrl) {
@@ -417,11 +413,18 @@ export const ProductDetailScreen = () => {
           </View>
           <TouchableOpacity
             style={styles.mapPreviewContainer}
+            onPress={() => navigation.navigate('Map', {
+              lat: prodLat,
+              lng: prodLng,
+              title: title
+            })}
             activeOpacity={0.9}
           >
-            <View style={[styles.mapWrap, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f4ff' }]}>
-              <MapPin color={Colors.primary} size={32} />
-              <Text style={{ color: Colors.textSecondary, marginTop: 8, fontSize: 13 }}>지도 기능 준비 중</Text>
+            <View style={styles.mapWrap}>
+              <KakaoMap lat={prodLat} lng={prodLng} title={title} />
+            </View>
+            <View style={styles.mapOverlay}>
+              <Text style={styles.mapOverlayText}>지도를 터치하여 크게 보기</Text>
             </View>
           </TouchableOpacity>
 

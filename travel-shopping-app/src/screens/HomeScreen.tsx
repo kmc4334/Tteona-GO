@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, SafeAreaView, Image, Platform, StatusBar, Dimensions, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -6,69 +6,41 @@ import { RootStackParamList } from '../types/travelTypes';
 import { Colors } from '../theme/colors';
 import { Spacing } from '../theme/spacing';
 import { Typography } from '../theme/typography';
-import { Search, Bell, Map, Sparkles, Navigation, Heart, Star, MapPin, Send, ChevronRight, AlertCircle, RefreshCw } from 'lucide-react-native';
+import { Search, Bell, Map, Sparkles, Navigation, Heart, Star, MapPin, Send, ChevronRight, AlertCircle } from 'lucide-react-native';
 import { useNotifications } from '../store/NotificationContext';
-import { API_BASE, useAuth } from '../store/AuthContext';
+import { API_BASE } from '../store/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 const COLUMN_WIDTH = (width - Spacing.lg * 3) / 2;
 
 const CATEGORIES = [
-  { id: 'all',   name: '전체',    dbName: '',      icon: '🌍' },
-  { id: 'stay',  name: '숙소',    dbName: '숙소',  icon: '🏨' },
-  { id: 'spot',  name: '관광지',  dbName: '관광지', icon: '🎡' },
-  { id: 'exp',   name: '체험',    dbName: '체험',  icon: '🏄' },
-  { id: 'trans', name: '교통수단', dbName: '교통수단', icon: '🚕' },
+  { id: 'all', name: '전체', icon: '🌍' },
+  { id: 'stay', name: '숙소', icon: '🏨' },
+  { id: 'spot', name: '관광지', icon: '🎡' },
+  { id: 'exp', name: '체험', icon: '🏄' },
+  { id: 'trans', name: '교통수단', icon: '🚕' },
 ];
 
 const SEARCH_TAGS = ['제주도', '서울', '부산', '양양', '경주'];
 
-// 성향 유형 → 이모지/이름 매핑
-function getPersonalityEmoji(type?: string): string {
-  const map: Record<string, string> = {
-    master_planner: '🗺️', free_spirit: '🎒', cozy_healer: '🌿',
-    trend_setter: '📸', action_seeker: '🏃', local_gourmet: '🍜',
-    easy_going: '🤝', lone_wanderer: '🧭',
-  };
-  return map[type || ''] || '✈️';
-}
-
-function getPersonalityName(type?: string): string {
-  const map: Record<string, string> = {
-    master_planner: '철두철미한 인간 엑셀', free_spirit: '자유로운 프로 방랑러',
-    cozy_healer: '에너지를 충전하는 칩거형', trend_setter: '트렌디한 감성 사냥꾼',
-    action_seeker: '익스트림 중독 활동가', local_gourmet: '로컬 헤리티지 미식가',
-    easy_going: '모두가 즐거운 평화주의자', lone_wanderer: '고독한 사색가',
-  };
-  return map[type || ''] || '여행 성향 미분석';
-}
-
 export const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { notifications } = useNotifications();
-  const { user } = useAuth();
   const unreadCount = notifications.filter(n => !n.isRead).length;
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('전체');
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 사용자 성향 정보
-  const personality = user?.travelPersonality;
-  const hasPersonality = !!personality?.type;
-
-  const fetchProducts = async (categoryFilter = selectedCategory) => {
+  const fetchProducts = async () => {
     try {
       setLoading(true);
       setError(null);
-      const params = new URLSearchParams();
-      if (categoryFilter) params.append('category', categoryFilter);
-      if (searchQuery)    params.append('search', searchQuery);
-      const url = `${API_BASE}/products${params.toString() ? '?' + params.toString() : ''}`;
-      const response = await fetch(url);
+      const response = await fetch(`${API_BASE}/products`);
       const data = await response.json();
-      
+
       if (data.success) {
         setProducts(data.products);
       } else {
@@ -82,18 +54,41 @@ export const HomeScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProducts(selectedCategory);
-  }, [selectedCategory]);
+  const handlePersonalityTestClick = async () => {
+    console.log('Personality test button clicked');
+    try {
+      // AsyncStorage에서 저장된 결과 확인 (DB 없이 로컬에 저장)
+      const savedResultString = await AsyncStorage.getItem('personalityResult');
 
-  // 검색어 변경 시 디바운스 적용
-  useEffect(() => {
-    const timer = setTimeout(() => fetchProducts(selectedCategory), 400);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+      if (savedResultString) {
+        // 저장된 결과가 있으면 결과 화면으로 이동
+        const savedResult = JSON.parse(savedResultString);
+        console.log('Found saved result:', savedResult.travelType);
+        navigation.navigate('PersonalityResult', { savedResult });
+      } else {
+        // 저장된 결과가 없으면 테스트 시작
+        console.log('No saved result, starting test');
+        navigation.navigate('PersonalityTest');
+      }
+    } catch (error) {
+      console.error('Check saved result error:', error);
+      // 에러 발생 시 테스트 시작
+      navigation.navigate('PersonalityTest');
+    }
+  };
 
-  // 서버에서 필터링된 결과를 그대로 사용 (검색 결과는 이미 서버에서 처리됨)
-  const filteredProducts = products;
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const matchCategory = selectedCategory === '전체' || product.category === selectedCategory;
+      const matchSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         product.location.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCategory && matchSearch;
+    });
+  }, [selectedCategory, searchQuery, products]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -150,8 +145,8 @@ export const HomeScreen = () => {
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tagScroll}>
               {SEARCH_TAGS.map(tag => (
-                <TouchableOpacity 
-                  key={tag} 
+                <TouchableOpacity
+                  key={tag}
                   style={styles.tagChip}
                   onPress={() => setSearchQuery(tag)}
                 >
@@ -184,76 +179,29 @@ export const HomeScreen = () => {
           </View>
         </View>
 
-        {/* ── AI Recommendation Card ── */}
+        {/* ── Personality Test Card ── */}
         <View style={styles.cardContainer}>
-          <TouchableOpacity style={styles.aiCard} onPress={() => navigation.navigate('Concierge')}>
-            <View style={styles.aiIconWrapper}>
-              <Sparkles size={22} color="#fff" strokeWidth={2} />
+          <TouchableOpacity style={styles.personalityCard} onPress={handlePersonalityTestClick}>
+            <View style={[styles.aiIconWrapper, { backgroundColor: '#9F7AEA' }]}>
+              <Text style={{ fontSize: 22 }}>✈️</Text>
             </View>
             <View style={styles.aiTextContent}>
-              <Text style={styles.aiTitle}>어디로 갈지 고민인가요?</Text>
-              <Text style={styles.aiSubtitle}>AI가 예산에 맞춰 일정을 짜드려요</Text>
+              <Text style={styles.aiTitle}>나의 여행 스타일은?</Text>
+              <Text style={styles.aiSubtitle}>12가지 질문으로 알아보는 여행 성향 테스트</Text>
             </View>
-            <Send size={22} color="#4A90E2" strokeWidth={1.5} />
+            <Send size={22} color="#9F7AEA" strokeWidth={1.5} />
           </TouchableOpacity>
-        </View>
-
-        {/* ── 여행 성향 카드 ── */}
-        <View style={styles.cardContainer}>
-          {hasPersonality ? (
-            // 성향 있을 때 — 결과 + 재검사 버튼
-            <TouchableOpacity
-              style={styles.personalityCard}
-              onPress={() => (navigation as any).navigate('PersonalityQuiz')}
-            >
-              <View style={styles.personalityLeft}>
-                <Text style={styles.personalityEmoji}>
-                  {getPersonalityEmoji(personality?.type)}
-                </Text>
-                <View style={styles.personalityText}>
-                  <Text style={styles.personalityLabel}>나의 여행 유형</Text>
-                  <Text style={styles.personalityType}>
-                    {getPersonalityName(personality?.type)}
-                  </Text>
-                  {personality?.tags && personality.tags.length > 0 && (
-                    <Text style={styles.personalityTags}>
-                      {personality.tags.map((t: string) => `#${t}`).join(' ')}
-                    </Text>
-                  )}
-                </View>
-              </View>
-              <View style={styles.retestBtn}>
-                <RefreshCw size={14} color="#4A90E2" strokeWidth={2.5} />
-                <Text style={styles.retestText}>재검사</Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            // 성향 없을 때 — 퀴즈 유도
-            <TouchableOpacity
-              style={styles.personalityCardEmpty}
-              onPress={() => (navigation as any).navigate('PersonalityQuiz')}
-            >
-              <View style={[styles.aiIconWrapper, { backgroundColor: '#9B59B6' }]}>
-                <Sparkles size={22} color="#fff" strokeWidth={2} />
-              </View>
-              <View style={styles.aiTextContent}>
-                <Text style={styles.aiTitle}>나의 여행 스타일은?</Text>
-                <Text style={styles.aiSubtitle}>12가지 질문으로 알아보는 여행 성향 테스트</Text>
-              </View>
-              <ChevronRight size={22} color="#9B59B6" strokeWidth={2} />
-            </TouchableOpacity>
-          )}
         </View>
 
         {/* ── 길찾기 카드 ── */}
         <View style={styles.cardContainer}>
-          <TouchableOpacity style={styles.routeCard} onPress={() => navigation.navigate('Map' as any)}>
+          <TouchableOpacity style={styles.routeCard} onPress={() => navigation.navigate('PathFinding')}>
             <View style={[styles.aiIconWrapper, { backgroundColor: '#52C41A' }]}>
               <Navigation size={22} color="#fff" strokeWidth={2} />
             </View>
             <View style={styles.aiTextContent}>
-              <Text style={styles.aiTitle}>🗺️ 여행 지도</Text>
-              <Text style={styles.aiSubtitle}>AI 추천 여행지를 지도에서 확인해요</Text>
+              <Text style={styles.aiTitle}>🗺️ 최단 경로 탐색</Text>
+              <Text style={styles.aiSubtitle}>다익스트라 알고리즘으로 최적 경로를 찾아드려요</Text>
             </View>
             <ChevronRight size={22} color="#52C41A" strokeWidth={2} />
           </TouchableOpacity>
@@ -265,11 +213,11 @@ export const HomeScreen = () => {
             {CATEGORIES.map(cat => (
               <TouchableOpacity
                 key={cat.id}
-                style={[styles.filterChip, selectedCategory === cat.dbName && styles.filterChipActive]}
-                onPress={() => setSelectedCategory(cat.dbName)}
+                style={[styles.filterChip, selectedCategory === cat.name && styles.filterChipActive]}
+                onPress={() => setSelectedCategory(cat.name)}
               >
                 <Text style={{ marginRight: 6, fontSize: 16 }}>{cat.icon}</Text>
-                <Text style={[styles.filterText, selectedCategory === cat.dbName && styles.filterTextActive]}>{cat.name}</Text>
+                <Text style={[styles.filterText, selectedCategory === cat.name && styles.filterTextActive]}>{cat.name}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -291,7 +239,7 @@ export const HomeScreen = () => {
             <View style={styles.errorContainer}>
               <AlertCircle size={40} color={Colors.error} />
               <Text style={styles.errorText}>{error}</Text>
-              <TouchableOpacity style={styles.retryBtn} onPress={() => fetchProducts(selectedCategory)}>
+              <TouchableOpacity style={styles.retryBtn} onPress={fetchProducts}>
                 <Text style={styles.retryBtnText}>다시 시도</Text>
               </TouchableOpacity>
             </View>
@@ -301,8 +249,8 @@ export const HomeScreen = () => {
             </View>
           ) : (
             filteredProducts.map(item => (
-              <TouchableOpacity 
-                key={item.id} 
+              <TouchableOpacity
+                key={item.id}
                 style={styles.productCard}
                 onPress={() => navigation.navigate('ProductDetail', { product: item })}
               >
@@ -462,6 +410,21 @@ const styles = StyleSheet.create({
   aiTitle: { fontSize: 15, fontWeight: 'bold', color: '#1A1A1A', marginBottom: 2 },
   aiSubtitle: { fontSize: 12, color: '#999', fontWeight: '600' },
 
+  personalityCard: {
+    backgroundColor: '#FAF5FF',
+    borderRadius: 25,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E9D8FD',
+    shadowColor: '#9F7AEA',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+
   routeCard: {
     backgroundColor: '#F0FFF4',
     borderRadius: 25,
@@ -472,7 +435,7 @@ const styles = StyleSheet.create({
     borderColor: '#C6F6D5',
     shadowColor: '#52C41A',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
@@ -585,73 +548,5 @@ const styles = StyleSheet.create({
   emptyText: {
     color: Colors.textSecondary,
     fontSize: 14,
-  },
-
-  // 성향 카드 스타일
-  personalityCard: {
-    backgroundColor: '#F8F0FF',
-    borderRadius: 25,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#E9D8FD',
-  },
-  personalityCardEmpty: {
-    backgroundColor: '#fff',
-    borderRadius: 25,
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
-    shadowRadius: 10,
-    elevation: 2,
-  },
-  personalityLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  personalityEmoji: {
-    fontSize: 36,
-    marginRight: 14,
-  },
-  personalityText: { flex: 1 },
-  personalityLabel: {
-    fontSize: 11,
-    color: '#9B59B6',
-    fontWeight: '800',
-    marginBottom: 2,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  personalityType: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#1A1A1A',
-    marginBottom: 4,
-  },
-  personalityTags: {
-    fontSize: 11,
-    color: '#9B59B6',
-    fontWeight: '600',
-  },
-  retestBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#EBF4FF',
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 14,
-    gap: 4,
-  },
-  retestText: {
-    fontSize: 12,
-    color: '#4A90E2',
-    fontWeight: '700',
-    marginLeft: 4,
   },
 });

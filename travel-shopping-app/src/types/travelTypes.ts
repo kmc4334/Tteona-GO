@@ -1,4 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { UserAnswers } from '../utils/personalityAnalyzer';
 
 export type RootStackParamList = {
   Intro: undefined;
@@ -8,12 +9,15 @@ export type RootStackParamList = {
   ProfileSetup: undefined;
   InterestSelection: undefined;
   TravelPreferences: undefined;
+  ResultPreview: undefined;
   AIReview: undefined;
   Weather: undefined;
-  Map: undefined;
+  Map: { lat: number; lng: number; title: string };
   Main: NavigatorScreenParams<BottomTabParamList>;
   Concierge: { initialQuery?: string } | undefined;
   CreatePackage: undefined;
+  ProductDetail: { product: any } | undefined;
+  PathFinding: undefined;
   MyActivity: undefined;
   Notification: undefined;
   Settings: undefined;
@@ -21,10 +25,11 @@ export type RootStackParamList = {
   ChangeName: undefined;
   ChangeEmail: undefined;
   ChangePassword: undefined;
+  PersonalityTest: undefined;
+  // 두 브랜치의 성향 결과 화면을 모두 지원하기 위한 통합 파라미터
+  PersonalityResult: { result?: any; answers?: UserAnswers; savedResult?: any };
+  // master 브랜치(주문/결제 흐름) 보존용 라우트
   PersonalityQuiz: undefined;
-  PersonalityResult: { result: any };
-  ResultPreview: undefined;
-  ProductDetail: { product: any };
   Checkout: { items: CheckoutItem[]; subtotal: number; discountAmount?: number };
   OrderComplete: { order: OrderResult };
 };
@@ -33,6 +38,7 @@ export type BottomTabParamList = {
   Home: undefined;
   AIRecommend: undefined;
   Package: undefined;
+  Schedule: undefined;
   CartTab: undefined;
   Profile: undefined;
 };

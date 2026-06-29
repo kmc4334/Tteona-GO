@@ -18,6 +18,8 @@ const preferenceRoutes  = require('./routes/preferenceRoutes');
 const itineraryRoutes   = require('./routes/itineraryRoutes');
 const placesRoutes      = require('./routes/placesRoutes');
 const orderRoutes       = require('./routes/orderRoutes');
+const personalityRoutes = require('./routes/personalityRoutes');
+const scheduleRoutes    = require('./routes/scheduleRoutes');
 const { startPriceSimulation } = require('./services/priceSimulator');
 
 const app = express();
@@ -39,6 +41,8 @@ app.use('/api/preference',    preferenceRoutes);
 app.use('/api/itinerary',     itineraryRoutes);
 app.use('/api/places',        placesRoutes);
 app.use('/api/orders',        orderRoutes);
+app.use('/api/personality',   personalityRoutes);
+app.use('/api/schedules',     scheduleRoutes);
 
 app.get('/api/health', (req, res) =>
   res.json({ success: true, message: '그리GO 백엔드 서버 정상 동작 중' })
@@ -76,7 +80,7 @@ mongoose.connect(USER_URI)
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 서버 실행 중: http://0.0.0.0:${PORT}`);
       console.log('📋 등록된 API 라우트:');
-      console.log('  [유저 DB]  /api/auth, /api/cart, /api/activity, /api/points, /api/packages, /api/notifications, /api/chat');
+      console.log('  [유저 DB]  /api/auth, /api/cart, /api/activity, /api/points, /api/packages, /api/notifications, /api/chat, /api/preference, /api/itinerary, /api/places, /api/orders, /api/personality, /api/schedules');
       console.log('  [상품 DB]  /api/products, /api/recommend');
       // startPriceSimulation(); // 임시 비활성화
     });
@@ -85,4 +89,3 @@ mongoose.connect(USER_URI)
     console.error('❌ [유저 DB] MongoDB 연결 오류:', err);
     process.exit(1);
   });
-

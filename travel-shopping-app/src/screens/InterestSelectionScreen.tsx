@@ -21,14 +21,13 @@ export const InterestSelectionScreen = () => {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const handleToggleInterest = (id: string) => {
-    setSelectedInterests(prev => 
+    setSelectedInterests(prev =>
       prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
 
   const handleNext = () => {
-    // 관심사 선택 후 성향 퀴즈로 이동
-    navigation.navigate('PersonalityQuiz' as never);
+    navigation.navigate('TravelPreferences' as never);
   };
 
   const isNextEnabled = selectedInterests.length >= 3;
@@ -36,7 +35,7 @@ export const InterestSelectionScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        
+
         <View style={styles.header}>
           <Text style={styles.title}>어떤 여행을 좋아하시나요?</Text>
           <Text style={styles.subtitle}>관심사를 3개 이상 선택해주세요.</Text>
@@ -64,7 +63,7 @@ export const InterestSelectionScreen = () => {
         </ScrollView>
 
         <View style={styles.footer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.nextButton, !isNextEnabled && styles.nextButtonDisabled]}
             disabled={!isNextEnabled}
             onPress={handleNext}

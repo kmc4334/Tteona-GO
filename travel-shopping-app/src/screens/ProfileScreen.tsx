@@ -26,7 +26,6 @@ export const ProfileScreen = () => {
 
   const fetchPoints = async () => {
     try {
-      setLoadingPoints(true);
       const response = await fetch(`${API_BASE}/points`, {
         headers: {
           'Authorization': `Bearer ${token}`

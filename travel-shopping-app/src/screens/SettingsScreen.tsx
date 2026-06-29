@@ -1,69 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Alert, ActivityIndicator, Platform } from 'react-native';
-import { ChevronLeft, Bell, Shield, CircleHelp, User, Lock, Mail, FileText, UserX } from 'lucide-react-native';
+import React from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { ChevronLeft, Bell, Shield, CircleHelp, User, Lock, Mail, FileText } from 'lucide-react-native';
 import { Colors } from '../theme/colors';
 import { Spacing } from '../theme/spacing';
 import { Typography } from '../theme/typography';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useAuth, API_BASE } from '../store/AuthContext';
+import { useAuth } from '../store/AuthContext';
 import { RootStackParamList } from '../types/travelTypes';
 
 export const SettingsScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { logout, token } = useAuth();
-  const [deleting, setDeleting] = useState(false);
-
-  const handleDeleteAccount = () => {
-    const doDelete = async () => {
-      setDeleting(true);
-      try {
-        const res = await fetch(`${API_BASE}/auth/delete`, {
-          method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (data.success) {
-          if (Platform.OS === 'web') {
-            window.alert('탈퇴 완료: 그동안 떠나GO를 이용해주셔서 감사합니다.');
-          } else {
-            Alert.alert('탈퇴 완료', '그동안 떠나GO를 이용해주셔서 감사합니다.');
-          }
-          logout();
-        } else {
-          if (Platform.OS === 'web') {
-            window.alert('오류: ' + (data.message || '탈퇴에 실패했습니다.'));
-          } else {
-            Alert.alert('오류', data.message || '탈퇴에 실패했습니다.');
-          }
-        }
-      } catch (e) {
-        if (Platform.OS === 'web') {
-          window.alert('오류: 네트워크 오류가 발생했습니다.');
-        } else {
-          Alert.alert('오류', '네트워크 오류가 발생했습니다.');
-        }
-      } finally {
-        setDeleting(false);
-      }
-    };
-
-    if (Platform.OS === 'web') {
-      const confirmed = window.confirm(
-        '정말 탈퇴하시겠어요?\n탈퇴 시 모든 데이터가 영구 삭제되며 복구할 수 없습니다.'
-      );
-      if (confirmed) doDelete();
-    } else {
-      Alert.alert(
-        '회원 탈퇴',
-        '정말 탈퇴하시겠어요?\n탈퇴 시 모든 데이터(장바구니, 채팅 기록, 패키지 등)가 영구 삭제되며 복구할 수 없습니다.',
-        [
-          { text: '취소', style: 'cancel' },
-          { text: '탈퇴하기', style: 'destructive', onPress: doDelete },
-        ]
-      );
-    }
-  };
+  const { logout } = useAuth();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -124,21 +72,6 @@ export const SettingsScreen = () => {
             onPress={logout}
           >
             <Text style={styles.logoutText}>로그아웃</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={handleDeleteAccount}
-            disabled={deleting}
-          >
-            {deleting ? (
-              <ActivityIndicator size="small" color={Colors.error || '#e53e3e'} />
-            ) : (
-              <>
-                <UserX color={Colors.error || '#e53e3e'} size={18} style={{ marginRight: 8 }} />
-                <Text style={styles.deleteText}>회원 탈퇴</Text>
-              </>
-            )}
           </TouchableOpacity>
         </View>
 
@@ -208,21 +141,5 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     fontSize: Typography.sizes.md,
     fontWeight: '600',
-  },
-  deleteButton: {
-    marginTop: Spacing.sm,
-    paddingVertical: Spacing.md,
-    backgroundColor: '#fff0f0',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#fcc',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  deleteText: {
-    color: Colors.error || '#e53e3e',
-    fontSize: Typography.sizes.md,
-    fontWeight: '700',
   },
 });

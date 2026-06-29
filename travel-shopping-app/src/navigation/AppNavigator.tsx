@@ -27,8 +27,13 @@ import { PersonalInfoScreen } from '../screens/PersonalInfoScreen';
 import { ChangeNameScreen } from '../screens/ChangeNameScreen';
 import { ChangeEmailScreen } from '../screens/ChangeEmailScreen';
 import { ChangePasswordScreen } from '../screens/ChangePasswordScreen';
-import { PersonalityQuizScreen } from '../screens/PersonalityQuizScreen';
+// 성향 분석 스크린 (travel: 신규 / master: 기존 보존)
+import { PersonalityTestScreen } from '../screens/PersonalityTestScreen';
 import { PersonalityResultScreen } from '../screens/PersonalityResultScreen';
+import { PersonalityQuizScreen } from '../screens/PersonalityQuizScreen';
+// 경로 탐색 (travel)
+import { PathFindingScreen } from '../screens/PathFindingScreen';
+// 주문/결제 흐름 (master 보존)
 import { CheckoutScreen } from '../screens/CheckoutScreen';
 import { OrderCompleteScreen } from '../screens/OrderCompleteScreen';
 import { Colors } from '../theme/colors';
@@ -60,8 +65,9 @@ export const AppNavigator = () => {
           <>
             <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
             <Stack.Screen name="InterestSelection" component={InterestSelectionScreen} />
+            <Stack.Screen name="PersonalityTest" component={PersonalityTestScreen} />
             <Stack.Screen name={"PersonalityQuiz" as any} component={PersonalityQuizScreen} />
-            <Stack.Screen name={"PersonalityResult" as any} component={PersonalityResultScreen} />
+            <Stack.Screen name="PersonalityResult" component={PersonalityResultScreen} />
             <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
             <Stack.Screen name={"ResultPreview" as keyof RootStackParamList} component={ResultPreviewScreen} />
             <Stack.Screen name="AIReview" component={AIReviewScreen} />
@@ -76,8 +82,9 @@ export const AppNavigator = () => {
             <Stack.Screen name="Map" component={MapScreen} />
             <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
             <Stack.Screen name="InterestSelection" component={InterestSelectionScreen} />
+            <Stack.Screen name="PersonalityTest" component={PersonalityTestScreen} />
             <Stack.Screen name={"PersonalityQuiz" as any} component={PersonalityQuizScreen} />
-            <Stack.Screen name={"PersonalityResult" as any} component={PersonalityResultScreen} />
+            <Stack.Screen name="PersonalityResult" component={PersonalityResultScreen} />
             <Stack.Screen name={"ResultPreview" as keyof RootStackParamList} component={ResultPreviewScreen} />
             <Stack.Screen name="Concierge" component={ConciergeScreen} />
             <Stack.Screen name="CreatePackage" component={CreatePackageScreen} />
@@ -89,6 +96,7 @@ export const AppNavigator = () => {
             <Stack.Screen name="ChangeName" component={ChangeNameScreen} />
             <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+            <Stack.Screen name="PathFinding" component={PathFindingScreen} />
             <Stack.Screen name="Checkout" component={CheckoutScreen} />
             <Stack.Screen name="OrderComplete" component={OrderCompleteScreen} options={{ gestureEnabled: false }} />
           </>
