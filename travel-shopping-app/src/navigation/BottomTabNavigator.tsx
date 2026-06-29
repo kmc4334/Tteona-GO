@@ -7,7 +7,6 @@ import { ProfileScreen } from '../screens/ProfileScreen';
 import { CartScreen } from '../screens/CartScreen';
 import { ConciergeScreen } from '../screens/ConciergeScreen';
 import { CreatePackageScreen } from '../screens/CreatePackageScreen';
-import { ScheduleScreen } from '../screens/ScheduleScreen';
 import { BottomTabParamList } from '../types/travelTypes';
 import { Colors } from '../theme/colors';
 
@@ -17,6 +16,8 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 const DummyScreen = () => <View style={{ flex: 1, backgroundColor: Colors.background }} />;
 
 export const BottomTabNavigator = () => {
+  console.log('📱 BottomTabNavigator rendering...');
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -58,23 +59,15 @@ export const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Schedule"
-        component={ScheduleScreen}
-        options={{
-          tabBarLabel: '일정',
-          tabBarIcon: ({ color, size }) => <Calendar color={color} size={20} />
-        }}
-      />
-      <Tab.Screen
         name="Package"
         component={CreatePackageScreen}
         options={{
-          tabBarLabel: '패키지',
-          tabBarIcon: ({ color, size }) => <Plus color={color} size={20} />,
+          tabBarLabel: '일정',
+          tabBarIcon: ({ color, size }) => <Calendar color={color} size={20} />,
           tabBarLabelStyle: {
             fontSize: 10,
             fontWeight: '600',
-            marginTop: 4, // use normal margin as icon is absolute
+            marginTop: 4,
           }
         }}
       />

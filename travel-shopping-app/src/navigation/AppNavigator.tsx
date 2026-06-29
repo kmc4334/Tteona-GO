@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigator } from './BottomTabNavigator';
 import { ConciergeScreen } from '../screens/ConciergeScreen';
 import { CreatePackageScreen } from '../screens/CreatePackageScreen';
+import { ScheduleScreen } from '../screens/ScheduleScreen';
 import { ProductDetailScreen } from '../screens/ProductDetailScreen';
 import { MyActivityScreen } from '../screens/MyActivityScreen';
 import { NotificationScreen } from '../screens/NotificationScreen';
@@ -36,6 +37,8 @@ import { Colors } from '../theme/colors';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppNavigator = () => {
+  console.log('🗺️ AppNavigator rendering...');
+  
   // 로그인 기능 임시 비활성화
   // const { isAuthenticated, loading, isOnboarded } = useAuth();
 

@@ -29,6 +29,9 @@ import { Spacing } from '../theme/spacing';
 import { Typography } from '../theme/typography';
 import { useSchedule, DaySchedule, SlotItem } from '../store/ScheduleContext';
 import { ScheduleChatbotModal } from './ScheduleChatbotModal';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/travelTypes';
 
 const CATEGORY_EMOJIS: Record<string, string> = {
   attraction: '🏛',
@@ -51,6 +54,7 @@ const getCategoryEmoji = (category: string) => {
 };
 
 export const ScheduleScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const {
     scheduleState,
     loading,
@@ -251,6 +255,15 @@ export const ScheduleScreen = () => {
               ) : (
                 <Text style={styles.submitButtonText}>일정 생성하기</Text>
               )}
+            </TouchableOpacity>
+
+            {/* AI 자동 생성 버튼 추가 */}
+            <TouchableOpacity
+              style={styles.aiGenerateButton}
+              onPress={() => navigation.navigate('CreatePackage')}
+            >
+              <Sparkles size={20} color={Colors.primary} />
+              <Text style={styles.aiGenerateButtonText}>🤖 AI로 자동 생성하기</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -712,5 +725,23 @@ const styles = StyleSheet.create({
     fontSize: Typography.sizes.md,
     fontWeight: Typography.weights.bold,
     marginLeft: Spacing.xs,
+  },
+  aiGenerateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.background,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    borderStyle: 'dashed',
+    paddingVertical: 16,
+    borderRadius: 14,
+    marginTop: Spacing.md,
+    gap: 8,
+  },
+  aiGenerateButtonText: {
+    color: Colors.primary,
+    fontSize: Typography.sizes.md,
+    fontWeight: Typography.weights.bold,
   },
 });
