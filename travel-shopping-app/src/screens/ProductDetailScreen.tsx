@@ -270,30 +270,35 @@ export const ProductDetailScreen = () => {
 
   const handleToggleLike = () => toggleLike(product);
 
-  const handleBookNow = () => {
-    if (isAccommodation) {
-      addBooking({
-        ...product,
-        price: totalPrice,
-        checkInDate: formatDate(checkIn),
+  // ── 결제 화면으로 이동 ──────────────────────────────────────────────────────
+  const handleCheckout = () => {
+    const checkoutItem = {
+      productId: product?.id || String(Math.random()),
+      title,
+      image,
+      category,
+      price: totalPrice,
+      quantity: 1,
+      ...(isAccommodation && {
+        checkInDate:  formatDate(checkIn),
         checkOutDate: formatDate(checkOut),
+        nights,
         guests,
-      } as any);
-    } else if (isExperience) {
-      addBooking({
-        ...product,
-        price: totalPrice,
-        checkInDate: formatDate(experienceDate),
-        checkOutDate: formatDate(experienceDate),
+      }),
+      ...(isExperience && {
+        experienceDate: formatDate(experienceDate),
         experienceSlot,
         guests: expGuests,
-      } as any);
-    } else {
-      addBooking({ ...product, price: totalPrice } as any);
-    }
-    addNotification({ title: '예약 완료', message: `'${title}' 예약이 완료되었습니다. 내 활동에서 확인하세요!`, type: 'alert' });
-    navigation.navigate('MyActivity');
+      }),
+    };
+    (navigation as any).navigate('Checkout', {
+      items:    [checkoutItem],
+      subtotal: totalPrice,
+      discountAmount: 0,
+    });
   };
+
+  const handleBookNow = () => handleCheckout();
 
   const handleExternalBooking = () => {
     if (externalUrl) {

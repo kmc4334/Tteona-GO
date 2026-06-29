@@ -1,21 +1,45 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image } from 'react-native';
-import { ArrowLeft, Share, Trash2 } from 'lucide-react-native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Image, Alert } from 'react-native';
+import { ArrowLeft, Share, Trash2, CreditCard } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/travelTypes';
+import { RootStackParamList, CheckoutItem } from '../types/travelTypes';
 import { Colors } from '../theme/colors';
 import { Spacing } from '../theme/spacing';
 import { Typography } from '../theme/typography';
 import { useCart } from '../store/CartContext';
+import { usePackage } from '../store/PackageContext';
 
 export const CartScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { cartItems, removeFromCart } = useCart();
+  const { packageName } = usePackage();
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice       = cartItems.reduce((sum, item) => sum + item.price, 0);
   const estimatedSavings = cartItems.length > 0 ? 12000 : 0;
-  const earningPoints = Math.floor((totalPrice - estimatedSavings) * 0.05);
+  const subtotal         = totalPrice;
+  const earningPoints    = Math.floor((subtotal - estimatedSavings) * 0.05);
+
+  // 장바구니 → 결제 화면으로 이동
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      Alert.alert('알림', '장바구니가 비어 있습니다.');
+      return;
+    }
+    const checkoutItems: CheckoutItem[] = cartItems.map(item => ({
+      productId: item.id,
+      title:     item.title,
+      image:     item.image,
+      category:  item.category,
+      price:     item.price,
+      quantity:  1,
+    }));
+    (navigation as any).navigate('Checkout', {
+      items:          checkoutItems,
+      subtotal,
+      discountAmount: estimatedSavings,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -33,7 +57,7 @@ export const CartScreen = () => {
 
         <View style={styles.packageHeaderBox}>
           <Text style={styles.badgeLabel}>작성 중</Text>
-          <Text style={styles.packageTitle}>제주도 2박3일 커플 여행</Text>
+          <Text style={styles.packageTitle}>{packageName || '나의 여행 패키지'}</Text>
         </View>
 
         <View style={styles.itemsList}>
@@ -111,12 +135,20 @@ export const CartScreen = () => {
 
       <View style={styles.bottomBar}>
         <View style={styles.actionButtonsRow}>
-          <TouchableOpacity style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>패키지 저장하기</Text>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => (navigation as any).navigate('CreatePackage')}
+          >
+            <Text style={styles.secondaryButtonText}>패키지 편집하기</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>이 패키지로 예약하기</Text>
+        <TouchableOpacity
+          style={[styles.primaryButton, cartItems.length === 0 && { opacity: 0.4 }]}
+          onPress={handleCheckout}
+          disabled={cartItems.length === 0}
+        >
+          <CreditCard color={Colors.secondary} size={18} style={{ marginRight: 8 }} />
+          <Text style={styles.primaryButtonText}>결제하기</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -215,6 +247,13 @@ const styles = StyleSheet.create({
   actionButtonsRow: { marginBottom: Spacing.sm },
   secondaryButton: { borderWidth: 1, borderColor: Colors.primary, paddingVertical: Spacing.sm, borderRadius: 24, alignItems: 'center' },
   secondaryButtonText: { color: Colors.primary, fontSize: Typography.sizes.md, fontWeight: Typography.weights.bold },
-  primaryButton: { backgroundColor: Colors.primary, paddingVertical: Spacing.md, borderRadius: 24, alignItems: 'center' },
+  primaryButton: {
+    backgroundColor: Colors.primary,
+    paddingVertical: Spacing.md,
+    borderRadius: 24,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   primaryButtonText: { color: Colors.secondary, fontSize: Typography.sizes.lg, fontWeight: Typography.weights.bold },
 });

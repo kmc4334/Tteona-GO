@@ -9,11 +9,26 @@ import { ConciergeScreen } from '../screens/ConciergeScreen';
 import { CreatePackageScreen } from '../screens/CreatePackageScreen';
 import { BottomTabParamList } from '../types/travelTypes';
 import { Colors } from '../theme/colors';
+import { useCart } from '../store/CartContext';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-// Dummy screens for UI layout
-const DummyScreen = () => <View style={{ flex: 1, backgroundColor: Colors.background }} />;
+// 장바구니 아이콘: 훅을 컴포넌트 최상위에서 올바르게 사용
+const CartTabIcon = ({ color }: { color: string }) => {
+  const { cartItems } = useCart();
+  return (
+    <View>
+      <ShoppingCart color={color} size={20} />
+      {cartItems.length > 0 && (
+        <View style={styles.cartBadge}>
+          <Text style={styles.cartBadgeText}>
+            {cartItems.length > 99 ? '99+' : cartItems.length}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 export const BottomTabNavigator = () => {
   return (
@@ -74,32 +89,7 @@ export const BottomTabNavigator = () => {
         component={CartScreen}
         options={{
           tabBarLabel: '장바구니',
-          tabBarIcon: ({ color, size }) => {
-            const { cartItems } = require('../store/CartContext').useCart();
-            return (
-              <View>
-                <ShoppingCart color={color} size={20} />
-                {cartItems.length > 0 && (
-                  <View style={{
-                    position: 'absolute',
-                    top: -5,
-                    right: -10,
-                    backgroundColor: Colors.error,
-                    borderRadius: 10,
-                    minWidth: 18,
-                    height: 18,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingHorizontal: 4,
-                  }}>
-                    <Text style={{ color: Colors.secondary, fontSize: 10, fontWeight: 'bold' }}>
-                      {cartItems.length}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            );
-          }
+          tabBarIcon: ({ color }) => <CartTabIcon color={color} />,
         }}
       />
       <Tab.Screen
@@ -113,3 +103,23 @@ export const BottomTabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  cartBadge: {
+    position: 'absolute',
+    top: -5,
+    right: -10,
+    backgroundColor: Colors.error,
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  cartBadgeText: {
+    color: Colors.secondary,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+});

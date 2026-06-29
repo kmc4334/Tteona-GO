@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
       setUser(userData);
       setToken(userToken);
-      setIsOnboarded(data.isOnboarded || true); // Default to true for logins
+      setIsOnboarded(data.isOnboarded ?? true); // nullish coalescing: false면 false 그대로 유지
 
       // Save to storage
       await AsyncStorage.setItem('token', userToken);

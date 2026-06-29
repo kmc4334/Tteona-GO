@@ -29,6 +29,8 @@ import { ChangeEmailScreen } from '../screens/ChangeEmailScreen';
 import { ChangePasswordScreen } from '../screens/ChangePasswordScreen';
 import { PersonalityQuizScreen } from '../screens/PersonalityQuizScreen';
 import { PersonalityResultScreen } from '../screens/PersonalityResultScreen';
+import { CheckoutScreen } from '../screens/CheckoutScreen';
+import { OrderCompleteScreen } from '../screens/OrderCompleteScreen';
 import { Colors } from '../theme/colors';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -87,6 +89,8 @@ export const AppNavigator = () => {
             <Stack.Screen name="ChangeName" component={ChangeNameScreen} />
             <Stack.Screen name="ChangeEmail" component={ChangeEmailScreen} />
             <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+            <Stack.Screen name="Checkout" component={CheckoutScreen} />
+            <Stack.Screen name="OrderComplete" component={OrderCompleteScreen} options={{ gestureEnabled: false }} />
           </>
         )}
       </Stack.Navigator>

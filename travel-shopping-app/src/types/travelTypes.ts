@@ -21,6 +21,12 @@ export type RootStackParamList = {
   ChangeName: undefined;
   ChangeEmail: undefined;
   ChangePassword: undefined;
+  PersonalityQuiz: undefined;
+  PersonalityResult: { result: any };
+  ResultPreview: undefined;
+  ProductDetail: { product: any };
+  Checkout: { items: CheckoutItem[]; subtotal: number; discountAmount?: number };
+  OrderComplete: { order: OrderResult };
 };
 
 export type BottomTabParamList = {
@@ -32,6 +38,36 @@ export type BottomTabParamList = {
 };
 
 export type TravelCategory = '숙소' | '관광지' | '체험' | '교통수단' | '기타';
+
+export interface CheckoutItem {
+  productId: string;
+  title: string;
+  image: string;
+  category: string;
+  price: number;
+  quantity: number;
+  checkInDate?: string;
+  checkOutDate?: string;
+  nights?: number;
+  experienceDate?: string;
+  experienceSlot?: string;
+  guests?: number;
+}
+
+export interface OrderResult {
+  _id: string;
+  orderNo: string;
+  items: CheckoutItem[];
+  subtotal: number;
+  discountAmount: number;
+  pointsUsed: number;
+  finalAmount: number;
+  pointsEarned: number;
+  paymentMethod: string;
+  paymentStatus: string;
+  status: string;
+  createdAt: string;
+}
 
 export interface TravelProduct {
   id: string;

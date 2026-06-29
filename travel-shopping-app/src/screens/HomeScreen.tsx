@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, SafeAreaView, Image, Platform, StatusBar, Dimensions, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -14,11 +14,11 @@ const { width } = Dimensions.get('window');
 const COLUMN_WIDTH = (width - Spacing.lg * 3) / 2;
 
 const CATEGORIES = [
-  { id: 'all', name: '전체', icon: '🌍' },
-  { id: 'stay', name: '숙소', icon: '🏨' },
-  { id: 'spot', name: '관광지', icon: '🎡' },
-  { id: 'exp', name: '체험', icon: '🏄' },
-  { id: 'trans', name: '교통수단', icon: '🚕' },
+  { id: 'all',   name: '전체',    dbName: '',      icon: '🌍' },
+  { id: 'stay',  name: '숙소',    dbName: '숙소',  icon: '🏨' },
+  { id: 'spot',  name: '관광지',  dbName: '관광지', icon: '🎡' },
+  { id: 'exp',   name: '체험',    dbName: '체험',  icon: '🏄' },
+  { id: 'trans', name: '교통수단', dbName: '교통수단', icon: '🚕' },
 ];
 
 const SEARCH_TAGS = ['제주도', '서울', '부산', '양양', '경주'];
@@ -48,7 +48,7 @@ export const HomeScreen = () => {
   const { notifications } = useNotifications();
   const { user } = useAuth();
   const unreadCount = notifications.filter(n => !n.isRead).length;
-  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,11 +58,15 @@ export const HomeScreen = () => {
   const personality = user?.travelPersonality;
   const hasPersonality = !!personality?.type;
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (categoryFilter = selectedCategory) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch(`${API_BASE}/products`);
+      const params = new URLSearchParams();
+      if (categoryFilter) params.append('category', categoryFilter);
+      if (searchQuery)    params.append('search', searchQuery);
+      const url = `${API_BASE}/products${params.toString() ? '?' + params.toString() : ''}`;
+      const response = await fetch(url);
       const data = await response.json();
       
       if (data.success) {
@@ -79,17 +83,17 @@ export const HomeScreen = () => {
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProducts(selectedCategory);
+  }, [selectedCategory]);
 
-  const filteredProducts = useMemo(() => {
-    return products.filter(product => {
-      const matchCategory = selectedCategory === '전체' || product.category === selectedCategory;
-      const matchSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         product.location.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchCategory && matchSearch;
-    });
-  }, [selectedCategory, searchQuery, products]);
+  // 검색어 변경 시 디바운스 적용
+  useEffect(() => {
+    const timer = setTimeout(() => fetchProducts(selectedCategory), 400);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // 서버에서 필터링된 결과를 그대로 사용 (검색 결과는 이미 서버에서 처리됨)
+  const filteredProducts = products;
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -261,11 +265,11 @@ export const HomeScreen = () => {
             {CATEGORIES.map(cat => (
               <TouchableOpacity
                 key={cat.id}
-                style={[styles.filterChip, selectedCategory === cat.name && styles.filterChipActive]}
-                onPress={() => setSelectedCategory(cat.name)}
+                style={[styles.filterChip, selectedCategory === cat.dbName && styles.filterChipActive]}
+                onPress={() => setSelectedCategory(cat.dbName)}
               >
                 <Text style={{ marginRight: 6, fontSize: 16 }}>{cat.icon}</Text>
-                <Text style={[styles.filterText, selectedCategory === cat.name && styles.filterTextActive]}>{cat.name}</Text>
+                <Text style={[styles.filterText, selectedCategory === cat.dbName && styles.filterTextActive]}>{cat.name}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -287,7 +291,7 @@ export const HomeScreen = () => {
             <View style={styles.errorContainer}>
               <AlertCircle size={40} color={Colors.error} />
               <Text style={styles.errorText}>{error}</Text>
-              <TouchableOpacity style={styles.retryBtn} onPress={fetchProducts}>
+              <TouchableOpacity style={styles.retryBtn} onPress={() => fetchProducts(selectedCategory)}>
                 <Text style={styles.retryBtnText}>다시 시도</Text>
               </TouchableOpacity>
             </View>
