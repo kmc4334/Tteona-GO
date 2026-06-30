@@ -138,7 +138,6 @@ export const HomeScreen = () => {
       {/* ── Header ── */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.greetingSmall}>안녕하세요 👋</Text>
           <Text style={styles.greetingLarge}>어디로 떠날까요?</Text>
         </View>
         <TouchableOpacity style={styles.bellBtn} onPress={() => navigation.navigate('Notification')}>

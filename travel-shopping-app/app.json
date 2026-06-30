@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "travel-shopping-app",
+    "name": "떠나GO",
     "slug": "travel-shopping-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo_v2.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/logo_v2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
