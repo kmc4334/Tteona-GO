@@ -273,27 +273,42 @@ export const ProductDetailScreen = () => {
 
   const handleBookNow = () => {
     if (isAccommodation) {
-      addBooking({
-        ...product,
-        price: totalPrice,
-        checkInDate: formatDate(checkIn),
-        checkOutDate: formatDate(checkOut),
-        guests,
-      } as any);
+      navigation.navigate('TossPayment', {
+        amount: totalPrice,
+        orderName: `${title} (${nights}박 ${guests}명)`,
+        customerName: '',
+        customerEmail: '',
+        product,
+        bookingInfo: {
+          checkInDate: formatDate(checkIn),
+          checkOutDate: formatDate(checkOut),
+          guests,
+          nights,
+        },
+      });
     } else if (isExperience) {
-      addBooking({
-        ...product,
-        price: totalPrice,
-        checkInDate: formatDate(experienceDate),
-        checkOutDate: formatDate(experienceDate),
-        experienceSlot,
-        guests: expGuests,
-      } as any);
+      navigation.navigate('TossPayment', {
+        amount: totalPrice,
+        orderName: `${title} (${experienceSlot} · ${expGuests}명)`,
+        customerName: '',
+        customerEmail: '',
+        product,
+        bookingInfo: {
+          checkInDate: formatDate(experienceDate),
+          checkOutDate: formatDate(experienceDate),
+          guests: expGuests,
+          experienceSlot,
+        },
+      });
     } else {
-      addBooking({ ...product, price: totalPrice } as any);
+      navigation.navigate('TossPayment', {
+        amount: totalPrice,
+        orderName: title,
+        customerName: '',
+        customerEmail: '',
+        product,
+      });
     }
-    addNotification({ title: '예약 완료', message: `'${title}' 예약이 완료되었습니다. 내 활동에서 확인하세요!`, type: 'alert' });
-    navigation.navigate('MyActivity');
   };
 
   const handleExternalBooking = () => {

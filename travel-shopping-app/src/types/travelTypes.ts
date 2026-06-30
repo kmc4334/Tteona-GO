@@ -27,6 +27,28 @@ export type RootStackParamList = {
   ChangePassword: undefined;
   PersonalityTest: undefined;
   PersonalityResult: { answers?: UserAnswers; savedResult?: any };
+  TossPayment: {
+    amount: number;
+    orderName: string;
+    customerName: string;
+    customerEmail: string;
+    product?: any;
+    bookingInfo?: {
+      checkInDate?: string;
+      checkOutDate?: string;
+      guests?: number;
+      experienceSlot?: string;
+      nights?: number;
+    };
+  };
+  PaymentSuccess: {
+    amount: number;
+    orderName: string;
+    product?: any;
+    pointsEarned: number;
+    totalPoints: number;
+  };
+  PaymentFail: { message: string };
 };
 
 export type BottomTabParamList = {

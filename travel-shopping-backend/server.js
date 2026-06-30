@@ -16,6 +16,7 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const chatRoutes        = require('./routes/chatRoutes');
 const personalityRoutes = require('./routes/personalityRoutes');
 const scheduleRoutes    = require('./routes/scheduleRoutes');
+const paymentRoutes     = require('./routes/paymentRoutes');
 const { startPriceSimulation } = require('./services/priceSimulator');
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/chat',          chatRoutes);
 app.use('/api/personality',   personalityRoutes);
 app.use('/api/schedules',     scheduleRoutes);
+app.use('/api/payments',      paymentRoutes);
 
 app.get('/api/health', (req, res) =>
   res.json({ success: true, message: '그리GO 백엔드 서버 정상 동작 중' })
