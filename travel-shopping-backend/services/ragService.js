@@ -46,86 +46,31 @@ const qdrantClient = new QdrantClient({
 
 const collectionName = process.env.QDRANT_COLLECTION || 'labeling';
 
-// Lazy-initialized @xenova/transformers pipeline
-let _embeddingPipeline = null;
+// Lazy-initialized @xenova/transformers pipeline (로컬 임베딩 - 사용 안함)
+// let _embeddingPipeline = null;
 
 // ---------------------------------------------------------------------------
 // Internal helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Returns (and caches) the @xenova/transformers feature-extraction pipeline
- * for the intfloat/multilingual-e5-base model.
+ * OpenAI text-embedding-3-small로 텍스트 임베딩
+ * (Railway 환경에서 로컬 모델 다운로드 없이 동작)
  *
- * @returns {Promise<Function>} The pipeline function
- */
-async function getEmbeddingPipeline() {
-  if (_embeddingPipeline) return _embeddingPipeline;
-
-  const { pipeline, env } = await import('@xenova/transformers');
-
-  // 원격 모델 다운로드 허용 및 캐시 경로 설정
-  env.allowRemoteModels = true;
-  env.allowLocalModels = true;
-  env.cacheDir = require('path').join(require('os').homedir(), '.cache', 'xenova');
-
-  console.log('[ragService] 임베딩 모델 로딩 시작: intfloat/multilingual-e5-base');
-  console.log('[ragService] 첫 실행 시 HuggingFace에서 모델을 다운로드합니다 (약 500MB)...');
-
-  _embeddingPipeline = await pipeline(
-    'feature-extraction',
-    'intfloat/multilingual-e5-base',
-    {
-      // quantized: false → model_quantized.onnx 대신 model.onnx 사용
-      quantized: false,
-      progress_callback: (progress) => {
-        if (progress.status === 'downloading') {
-          const pct = progress.progress ? progress.progress.toFixed(1) : '?';
-          process.stdout.write(
-            `\r[ragService] 다운로드 중: ${progress.file} — ${pct}%   `
-          );
-        } else if (progress.status === 'done') {
-          console.log(`\n[ragService] 완료: ${progress.file}`);
-        }
-      },
-    }
-  );
-
-  console.log('[ragService] ✅ 임베딩 모델 로딩 완료');
-  return _embeddingPipeline;
-}
-
-// ---------------------------------------------------------------------------
-// Exported utility functions
-// ---------------------------------------------------------------------------
-
-/**
- * Embeds the given text using the intfloat/multilingual-e5-base model
- * (local execution via @xenova/transformers).
- *
- * @param {string} text - The text to embed
- * @returns {Promise<number[]>} A 768-dimensional numeric vector
- * @throws {Error} If the embedding pipeline fails
+ * @param {string} text
+ * @returns {Promise<number[]>} 1536-dimensional vector
  */
 async function embedText(text) {
-  const pipe = await getEmbeddingPipeline();
-
-  // The model expects a "query:" prefix for retrieval queries.
-  const output = await pipe(`query: ${text}`, {
-    pooling: 'mean',
-    normalize: true,
-  });
-
-  // output.data is a Float32Array; convert to a plain Array for Qdrant.
-  const vector = Array.from(output.data);
-
-  if (vector.length !== 768) {
-    throw new Error(
-      `[ragService] embedText: 예상 벡터 차원 768, 실제 ${vector.length}`
-    );
+  try {
+    const response = await openaiClient.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: `query: ${text}`,
+    });
+    return response.data[0].embedding;
+  } catch (error) {
+    console.error('[ragService] OpenAI 임베딩 실패:', error.message || error);
+    throw error;
   }
-
-  return vector;
 }
 
 /**
@@ -144,8 +89,8 @@ async function searchQdrant(vector) {
     });
     return results;
   } catch (error) {
-    console.error('[ragService] Qdrant 검색 실패:', error.message || error);
-    return [];
+    console.error('[ragService] Qdrant 검색 실패 (GPT 단독 응답으로 대체):', error.message || error);
+    return []; // Qdrant 없어도 GPT만으로 응답
   }
 }
 
