@@ -337,17 +337,67 @@ export const CreatePackageScreen: React.FC = () => {
                 <View style={styles.formRow}>
                   <View style={[styles.formGroup, { flex: 1 }]}>
                     <Text style={styles.label}>출발일</Text>
-                    <TouchableOpacity style={styles.dateInputContainer} onPress={() => setShowStartPicker(true)} activeOpacity={0.7}>
-                      <Text style={styles.dateInputText}>{startDateText || formatDate(startDate)}</Text>
-                      <View style={styles.calendarBtn}><CalendarIcon size={20} color={Colors.primary} /></View>
-                    </TouchableOpacity>
+                    {Platform.OS === 'web' ? (
+                      // @ts-ignore
+                      <input
+                        type="date"
+                        value={startDateText || formatDate(startDate)}
+                        min={formatDate(new Date())}
+                        onChange={(e: any) => {
+                          const val = e.target.value;
+                          if (!val) return;
+                          setStartDateText(val);
+                          setStartDate(new Date(val));
+                          if (new Date(val) > endDate) {
+                            setEndDateText(val);
+                            setEndDate(new Date(val));
+                          }
+                        }}
+                        style={{
+                          width: '100%', padding: '14px', fontSize: '15px',
+                          border: '1.5px solid #E0E0E0', borderRadius: '10px',
+                          color: '#1A1A1A', backgroundColor: '#fff',
+                          boxSizing: 'border-box', outline: 'none', cursor: 'pointer',
+                        }}
+                      />
+                    ) : (
+                      <TouchableOpacity style={styles.dateInputContainer} onPress={() => setShowStartPicker(true)} activeOpacity={0.7}>
+                        <Text style={styles.dateInputText}>{startDateText || formatDate(startDate)}</Text>
+                        <View style={styles.calendarBtn}><CalendarIcon size={20} color={Colors.primary} /></View>
+                      </TouchableOpacity>
+                    )}
                   </View>
                   <View style={[styles.formGroup, { flex: 1, marginLeft: 12 }]}>
                     <Text style={styles.label}>도착일</Text>
-                    <TouchableOpacity style={styles.dateInputContainer} onPress={() => setShowEndPicker(true)} activeOpacity={0.7}>
-                      <Text style={styles.dateInputText}>{endDateText || formatDate(endDate)}</Text>
-                      <View style={styles.calendarBtn}><CalendarIcon size={20} color={Colors.primary} /></View>
-                    </TouchableOpacity>
+                    {Platform.OS === 'web' ? (
+                      // @ts-ignore
+                      <input
+                        type="date"
+                        value={endDateText || formatDate(endDate)}
+                        min={startDateText || formatDate(startDate)}
+                        onChange={(e: any) => {
+                          const val = e.target.value;
+                          if (!val) return;
+                          if (new Date(val) < new Date(startDateText || formatDate(startDate))) {
+                            showAlert('알림', '도착일은 출발일 이후여야 합니다.');
+                            return;
+                          }
+                          setEndDateText(val);
+                          setEndDate(new Date(val));
+                        }}
+                        style={{
+                          width: '100%', padding: '14px', fontSize: '15px',
+                          border: '1.5px solid #E0E0E0', borderRadius: '10px',
+                          color: '#1A1A1A', backgroundColor: '#fff',
+                          boxSizing: 'border-box', outline: 'none', cursor: 'pointer',
+                        }}
+                      />
+                    ) : (
+                      <TouchableOpacity style={styles.dateInputContainer} onPress={() => setShowEndPicker(true)} activeOpacity={0.7}>
+                        <Text style={styles.dateInputText}>{endDateText || formatDate(endDate)}</Text>
+                        <View style={styles.calendarBtn}><CalendarIcon size={20} color={Colors.primary} /></View>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
                 <View style={styles.formRow}>
